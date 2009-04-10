@@ -11,7 +11,7 @@ public class DepthLimitedSearch extends GeneralSearch {
 	public DepthLimitedSearch(State startState, NodeInfo nodeInfo, double depth) {
 		super(startState, nodeInfo);
 		this.nodeInfo.setDepthLimit(depth);
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	private boolean isVisited(Node cur) {
