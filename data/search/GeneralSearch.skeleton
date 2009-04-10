@@ -1,0 +1,37 @@
+//
+//  GeneralSearch.skeleton
+//  javaAgents
+//
+//  Created by Cara MacNish on 28/07/05.
+//  Copyright (c) 2005 CSSE, UWA. All rights reserved.
+//
+
+package search;
+import agent.*;
+
+import java.util.*;
+
+public abstract class GeneralSearch {
+
+  NodeInfo nodeInfo;
+  ArrayList unvisited;
+  ArrayList visited;
+
+  public GeneralSearch (State startState, NodeInfo nodeInfo) {
+    this.nodeInfo = nodeInfo;
+    unvisited = new ArrayList();
+    unvisited.add(new Node(startState, new Actions()));
+    visited = new ArrayList();
+  }
+
+  public Node search () {
+
+    // your code goes here
+
+  }
+      
+  public abstract Node select ();
+
+  public abstract void insert (Node node);
+
+}
