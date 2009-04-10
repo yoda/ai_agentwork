@@ -45,7 +45,7 @@ public class Play {
 
 	// the following runs game automatically without using gui
 	Game game = new Game("CheX",setup,red,black, 60, 6, "terminal");
-	for(int x = 0; x < 1; x++) {
+	for(int x = 0; x < 2; x++) {
 		
 		while (!game.gameIsOver()) game.step();
 		if(game.blackWon()) {

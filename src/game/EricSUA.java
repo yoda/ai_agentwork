@@ -113,6 +113,7 @@ public class EricSUA extends Player implements agent.Agent {
 		 for(Iterator<MoveValuePair> findBest = bestMoveValuePairs.iterator(); findBest.hasNext(); ) {
 			 MoveValuePair currentPair = findBest.next();
 			 if(currentPair.getValue() > best) {
+				 best = currentPair.getValue();
 				 bestMove = currentPair.getMove();
 			 }
 		 }
@@ -129,12 +130,14 @@ public class EricSUA extends Player implements agent.Agent {
 	}
 	
 	public double maxForP(Board original, Board withMove, int nPly) {
-		if(nPly > maxPly) {
-			return 0;
-		}
 		double result = 0;
 		double maxValue = Double.NEGATIVE_INFINITY;
 		ArrayList<MoveValuePair> bestMoveValuePairs = new ArrayList<MoveValuePair>();
+		
+		nPly++;
+		if(nPly > maxPly) {
+			return 0;
+		}
 		
 		for(Iterator<Move> pMove = withMove.getActions().iterator(); pMove.hasNext(); ) {
 			Move currentMove = pMove.next();
@@ -152,18 +155,19 @@ public class EricSUA extends Player implements agent.Agent {
 			 }
 		 }
 		 withMove.update(bestMove);
-		 result += minForO(original, withMove, nPly++);
+		 result += minForO(original, withMove, nPly);
 		 return result;
 	}
 	
 	public double minForO(Board original, Board withMove, int nPly) {
-		
-		if(nPly > maxPly) {
-			return 0;
-		}
 		double result = 0;
 		double minValue = Double.POSITIVE_INFINITY;
 		ArrayList<MoveValuePair> worstMoveValuePairs = new ArrayList<MoveValuePair>();
+		
+		nPly++;
+		if(nPly > maxPly) {
+			return 0;
+		}
 		
 		for(Iterator<Move> oMove = withMove.getActions().iterator(); oMove.hasNext(); ) {
 			Move currentMove = oMove.next();
@@ -181,7 +185,7 @@ public class EricSUA extends Player implements agent.Agent {
 			 }
 		 }
 		 withMove.update(worstMove);
-		 result += maxForP(original, withMove, nPly++);
+		 result += maxForP(original, withMove, nPly);
 		 return result;
 	}
 	
