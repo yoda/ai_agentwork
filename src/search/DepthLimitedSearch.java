@@ -14,6 +14,20 @@ public class DepthLimitedSearch extends GeneralSearch {
 		// TODO Auto-generated constructor stub
 	}
 	
+	private boolean isVisited(Node cur) {
+		boolean isinvisited = false;
+		
+		if(!this.visited.isEmpty() && cur != null) {
+			for(int x = 0; x < this.visited.size(); x++) {
+				if(this.visited.get(x).getState().toString().compareTo(cur.getState().toString()) == 0) {
+					isinvisited = true;
+				}
+			}
+		}
+				
+		return isinvisited;
+	}
+	
 	@Override
 	public void insert(Node node) {
 		
@@ -27,12 +41,10 @@ public class DepthLimitedSearch extends GeneralSearch {
 			for(int z = 0; z < children.size(); z++) {
 				Node clone = ((Node)node.clone());
 				clone.update((Action)children.get(z));
-				//if(clone.getPath().size() <= this.nodeInfo.getDepthLimit()) {
+				if(!isVisited(clone)) {
 					this.unvisited.add(0,clone);
 					result += " : " + clone.getState().toString();
-					//System.out.println(this.unvisited.get(z).getState().toString());
-				//}
-				
+				}
 			}
 			System.out.println("Adding" + result);
 		}

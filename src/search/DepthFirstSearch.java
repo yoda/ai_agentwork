@@ -11,7 +11,6 @@ public class DepthFirstSearch extends GeneralSearch {
 
 	private boolean isVisited(Node cur) {
 		boolean isinvisited = false;
-		boolean isinunvisited = false;
 		
 		if(!this.visited.isEmpty() && cur != null) {
 			for(int x = 0; x < this.visited.size(); x++) {
@@ -20,16 +19,8 @@ public class DepthFirstSearch extends GeneralSearch {
 				}
 			}
 		}
-		
-		if(!this.unvisited.isEmpty() && cur != null) {
-			for(int x = 0; x < this.unvisited.size(); x++) {
-				if(this.unvisited.get(x).getState().toString().compareTo(cur.getState().toString()) == 0) {
-					isinunvisited = true;
-				}
-			}
-		}
-		
-		return isinvisited || isinunvisited;
+				
+		return isinvisited;
 	}
 	
 	@Override

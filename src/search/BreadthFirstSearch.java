@@ -11,7 +11,6 @@ public class BreadthFirstSearch extends GeneralSearch {
 
 	private boolean isVisited(Node cur) {
 		boolean isinvisited = false;
-		boolean isinunvisited = false;
 		
 		// Check the visited list.
 		if(!this.visited.isEmpty() && cur != null) {
@@ -22,16 +21,7 @@ public class BreadthFirstSearch extends GeneralSearch {
 			}
 		}
 		
-		// Check the unvisited list.
-		if(!this.unvisited.isEmpty() && cur != null) {
-			for(int x = 0; x < this.unvisited.size(); x++) {
-				if(this.unvisited.get(x).getState().toString().compareTo(cur.getState().toString()) == 0) {
-					isinunvisited = true;
-				}
-			}
-		}
-		
-		return isinvisited || isinunvisited;
+		return isinvisited;
 	}
 	
 	@Override
