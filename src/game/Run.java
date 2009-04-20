@@ -9,6 +9,7 @@ public class Run {
 	 */
 	public static void main(String[] args) {
 		Play.main(null);
+		// Added comment
 	}
 
 }
