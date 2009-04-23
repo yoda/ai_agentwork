@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import search.DepthLimitedSearch;
+import search.Minimax;
 import search.Node;
 
 import agent.Action;
@@ -66,17 +67,16 @@ function Minimax-Value(state, game) returns a utility value
 
  */
 
-public class EricSUA extends Player implements agent.Agent {
+public class EricMiniMax extends Player implements agent.Agent {
 
 	CheXNodeInfo nodeInfo;
 	Random random;
-	int maxPly;
 	
-	public EricSUA(boolean isRed) {
-		super(isRed, "Eric - Simple Utility Agent");
-		this.nodeInfo = new CheXNodeInfo(isRed, 16);
+	public EricMiniMax(boolean isRed) {
+		super(isRed, "Eric - MiniMax Agent");
+		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
-		maxPly = 16;
+		
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
@@ -86,6 +86,7 @@ public class EricSUA extends Player implements agent.Agent {
 	public Action getAction(Percept cP) {
 		 Board board = (Board) cP;
 		 Moves fullMoveList = (Moves)board.getActions();
+		 Minimax search = new Minimax(this.nodeInfo);
 		 
 		 PieceSet currentPieceSet = board.getRedPieces();
 		 if(this.isRed) {
@@ -103,7 +104,7 @@ public class EricSUA extends Player implements agent.Agent {
 				 Move move = moves.next();
 				 Board clone = (Board)board.clone();
 				 clone.update(move);
-				 bestMoveValuePairs.add(new MoveValuePair(move, optimumMoveValueForPiece(board, clone)));
+				 bestMoveValuePairs.add(new MoveValuePair(move, search.minValue(new Node(clone))));
 			 }
 		 }
 		 
@@ -118,75 +119,6 @@ public class EricSUA extends Player implements agent.Agent {
 			 }
 		 }
 	     return bestMove;
-	}
-	
-	// Must return the max value for me for the piece that was moved for this board.
-	public double optimumMoveValueForPiece(Board original, Board withMove) {
-		int nPly = 0;
-		double result = 0;
-		
-		result = minForO(original, withMove, nPly);
-		return result;
-	}
-	
-	public double maxForP(Board original, Board withMove, int nPly) {
-		double result = 0;
-		double maxValue = Double.NEGATIVE_INFINITY;
-		ArrayList<MoveValuePair> bestMoveValuePairs = new ArrayList<MoveValuePair>();
-		
-		nPly++;
-		if(nPly > maxPly) {
-			return 0;
-		}
-		
-		for(Iterator<Move> pMove = withMove.getActions().iterator(); pMove.hasNext(); ) {
-			Move currentMove = pMove.next();
-			Board clone = (Board)withMove.clone();
-			clone.update(currentMove);
-			bestMoveValuePairs.add(new MoveValuePair(currentMove, nodeInfo.utility(new Node(clone, new Actions()))));
-		}
-		
-		Move bestMove = (Move)withMove.getActions().get(random.nextInt(withMove.getActions().size()));
-		for(Iterator<MoveValuePair> findBest = bestMoveValuePairs.iterator(); findBest.hasNext(); ) {
-			 MoveValuePair currentPair = findBest.next();
-			 if(currentPair.getValue() > maxValue) {
-				 maxValue = currentPair.getValue();
-				 bestMove = currentPair.getMove();
-			 }
-		 }
-		 withMove.update(bestMove);
-		 result += minForO(original, withMove, nPly);
-		 return result;
-	}
-	
-	public double minForO(Board original, Board withMove, int nPly) {
-		double result = 0;
-		double minValue = Double.NEGATIVE_INFINITY;
-		ArrayList<MoveValuePair> worstMoveValuePairs = new ArrayList<MoveValuePair>();
-		
-		nPly++;
-		if(nPly > maxPly) {
-			return 0;
-		}
-		
-		for(Iterator<Move> oMove = withMove.getActions().iterator(); oMove.hasNext(); ) {
-			Move currentMove = oMove.next();
-			Board clone = (Board)withMove.clone();
-			clone.update(currentMove);
-			worstMoveValuePairs.add(new MoveValuePair(currentMove, nodeInfo.utility(new Node(clone, new Actions()))));
-		}
-		
-		Move worstMove = (Move)withMove.getActions().get(random.nextInt(withMove.getActions().size()));
-		for(Iterator<MoveValuePair> findWorst = worstMoveValuePairs.iterator(); findWorst.hasNext(); ) {
-			 MoveValuePair currentPair = findWorst.next();
-			 if(currentPair.getValue() > minValue) {
-				 minValue = currentPair.getValue();
-				 worstMove = currentPair.getMove();
-			 }
-		 }
-		 withMove.update(worstMove);
-		 result += maxForP(original, withMove, nPly);
-		 return result;
 	}
 	
 	public class MoveValuePair {

@@ -26,7 +26,6 @@ public class CheXNodeInfo implements NodeInfo {
 
 	boolean isRed;
 	double depthlimit;
-	Board originboard;
 	
 	int king = 11;
 	String aKing = (new King(false, false)).toString().toLowerCase();
@@ -53,10 +52,9 @@ public class CheXNodeInfo implements NodeInfo {
 		this.isRed = isRed;
 	}
 	
-	public CheXNodeInfo(boolean isRed, double depth, Board originboard) {
+	public CheXNodeInfo(boolean isRed, double depth) {
 		this.depthlimit = depth;
 		this.isRed = isRed;
-		this.originboard = originboard;
 	}
 
 	@Override
