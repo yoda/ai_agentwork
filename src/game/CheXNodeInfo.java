@@ -159,7 +159,7 @@ public class CheXNodeInfo implements NodeInfo {
 					red -= this.getPieceValue(board.getSquare(currentPosition).look());
 				}
 			}
-			black += currentPieceMoves.size();
+		//	black += currentPieceMoves.size();
 			
 		}
 //		Point currentPosition = currentMove.getDestination();
@@ -178,7 +178,7 @@ public class CheXNodeInfo implements NodeInfo {
 					black -= this.getPieceValue(board.getSquare(currentPosition).look());
 				}
 			}
-			red += currentPieceMoves.size();
+			//red += currentPieceMoves.size();
 		}
 		
 		if(this.isRed) {

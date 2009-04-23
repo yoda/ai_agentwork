@@ -5,6 +5,7 @@ Player: game.EricNSRD
 Player: game.EricNSRM
 Player: game.EricNSRT
 Player: game.EricSUA
+Player: game.EricMiniMax
 Player: samplePlayers.Marvin
 Player: samplePlayers.Hal
 Setup:
