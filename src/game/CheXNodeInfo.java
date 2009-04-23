@@ -6,10 +6,18 @@ import java.util.Iterator;
 import agent.Actions;
 
 import mixmeta4.Board;
+import mixmeta4.Egg;
+import mixmeta4.Frogger;
+import mixmeta4.Galaxian;
+import mixmeta4.King;
+import mixmeta4.Knight;
 import mixmeta4.Move;
 import mixmeta4.Moves;
 import mixmeta4.Piece;
 import mixmeta4.PieceSet;
+import mixmeta4.Pod;
+import mixmeta4.Queen;
+import mixmeta4.Winthrop;
 import search.Node;
 import search.NodeInfo;
 
@@ -20,14 +28,22 @@ public class CheXNodeInfo implements NodeInfo {
 	double depthlimit;
 	Board originboard;
 	
-	int king = 100;
+	int king = 11;
+	String aKing = (new King(false, false)).toString().toLowerCase();
 	int queen = 9;
+	String aQueen = (new Queen(false, false)).toString().toLowerCase();
 	int egg = 1;
+	String anEgg = (new Egg(false, false)).toString().toLowerCase();
 	int frogger = 1;
+	String aFrogger = (new Frogger(false, false)).toString().toLowerCase();
 	int galaxian = 2;
+	String aGalaxian = (new Galaxian(false, false)).toString().toLowerCase();
 	int winthrop = 5;
+	String aWinthrop = (new Winthrop(false, false)).toString().toLowerCase();
 	int pod = 3;
+	String aPod = (new Pod(false, false)).toString().toLowerCase();
 	int knight = 3;
+	String aKnight = (new Knight(false, false)).toString().toLowerCase();
 	
 	int takeable = 10;
 	
@@ -66,6 +82,43 @@ public class CheXNodeInfo implements NodeInfo {
 		this.depthlimit = limit;
 	}
 
+	public int getPieceValue(Piece thepiece) {
+		String currentPiece = thepiece.toString().toLowerCase();
+		if(currentPiece.compareTo(this.aQueen) == 0) {
+			return this.queen;
+		}
+		
+		if(currentPiece.compareTo(this.anEgg) == 0) {
+			return this.egg;
+		}
+		
+		if(currentPiece.compareTo(this.aFrogger) == 0) {
+			return this.frogger;
+		}
+		
+		if(currentPiece.compareTo(this.aGalaxian) == 0) {
+			return this.galaxian;
+		}
+		
+		if(currentPiece.compareTo(this.aKing) == 0) {
+			return this.king;
+		}
+		
+		if(currentPiece.compareTo(this.aKnight) == 0) {
+			return this.knight;
+		}
+		
+		if(currentPiece.compareTo(this.aPod) == 0) {
+			return this.pod;
+		}
+		
+		if(currentPiece.compareTo(this.aWinthrop) == 0) {
+			return this.winthrop;
+		}
+		
+		return 0;
+	}
+	
 	@Override
 	public double utility(Node node) {
 		Board board = (Board)node.getState();
@@ -103,8 +156,9 @@ public class CheXNodeInfo implements NodeInfo {
 			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 				Move currentMove = moves.next();
 				Point currentPosition = currentMove.getDestination();
-				if(board.getSquare(currentPosition).isOccupiedByOpponent(!this.isRed)) {
-					black += takeable;
+				if(board.getSquare(currentPosition).isOccupiedByRed()) {
+					black += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
+					red -= this.getPieceValue(board.getSquare(currentPosition).look());
 				}
 			}
 			black += currentPieceMoves.size();
@@ -121,8 +175,9 @@ public class CheXNodeInfo implements NodeInfo {
 			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 				Move currentMove = moves.next();
 				Point currentPosition = currentMove.getDestination();
-				if(board.getSquare(currentPosition).isOccupiedByOpponent(this.isRed)) {
-					red += takeable;
+				if(board.getSquare(currentPosition).isOccupiedByBlack()) {
+					red += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
+					black -= this.getPieceValue(board.getSquare(currentPosition).look());
 				}
 			}
 			red += currentPieceMoves.size();

@@ -74,9 +74,9 @@ public class EricSUA extends Player implements agent.Agent {
 	
 	public EricSUA(boolean isRed) {
 		super(isRed, "Eric - Simple Utility Agent");
-		this.nodeInfo = new CheXNodeInfo(isRed, 2, null);
+		this.nodeInfo = new CheXNodeInfo(isRed, 16, null);
 		this.random = new Random();
-		maxPly = 3;
+		maxPly = 16;
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
@@ -161,7 +161,7 @@ public class EricSUA extends Player implements agent.Agent {
 	
 	public double minForO(Board original, Board withMove, int nPly) {
 		double result = 0;
-		double minValue = Double.POSITIVE_INFINITY;
+		double minValue = Double.NEGATIVE_INFINITY;
 		ArrayList<MoveValuePair> worstMoveValuePairs = new ArrayList<MoveValuePair>();
 		
 		nPly++;
@@ -179,7 +179,7 @@ public class EricSUA extends Player implements agent.Agent {
 		Move worstMove = (Move)withMove.getActions().get(random.nextInt(withMove.getActions().size()));
 		for(Iterator<MoveValuePair> findWorst = worstMoveValuePairs.iterator(); findWorst.hasNext(); ) {
 			 MoveValuePair currentPair = findWorst.next();
-			 if(currentPair.getValue() < minValue) {
+			 if(currentPair.getValue() > minValue) {
 				 minValue = currentPair.getValue();
 				 worstMove = currentPair.getMove();
 			 }
