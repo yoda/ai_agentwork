@@ -30,6 +30,7 @@ public class Minimax {
   /**
    * @return the highest value Max can achieve at this node with optimal play
    */
+  
   public double maxValue (Node visit) {
     double maxSoFar = Double.NEGATIVE_INFINITY;
     ListIterator li;
@@ -37,16 +38,18 @@ public class Minimax {
     Node child;
     double childValue;
     if (nodeInfo.isTerminal(visit)) {
-
+    	return nodeInfo.utility(visit);
     }
     else {
       li = visit.getState().getActions().listIterator();
       while (li.hasNext()) {
-
-
-
-
-
+    	  child = (Node)visit.clone();
+    	  arc = (Action)li.next();
+    	  child.update(arc);
+    	  childValue = minValue(child);
+    	  if(child.getUtility() > maxSoFar) {
+    		  maxSoFar = child.getUtility();
+    	  }
       }
       return maxSoFar;
     }
@@ -57,7 +60,26 @@ public class Minimax {
    */
   public double minValue (Node visit) {
     double minSoFar = Double.POSITIVE_INFINITY;
-
+    ListIterator li;
+    Action arc;
+    Node child;
+    double childValue;
+    if (nodeInfo.isTerminal(visit)) {
+    	return nodeInfo.utility(visit);
+    }
+    else {
+      li = visit.getState().getActions().listIterator();
+      while (li.hasNext()) {
+    	  child = (Node)visit.clone();
+    	  arc = (Action)li.next();
+    	  child.update(arc);
+    	  childValue = maxValue(child);
+    	  if(child.getUtility() < minSoFar) {
+    		  minSoFar = child.getUtility();
+    	  }
+      }
+      return minSoFar;
+    }
 
 
   }
