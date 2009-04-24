@@ -47,8 +47,8 @@ public class Minimax {
     	  arc = (Action)li.next();
     	  child.update(arc);
     	  childValue = minValue(child);
-    	  if(child.getUtility() > maxSoFar) {
-    		  maxSoFar = child.getUtility();
+    	  if(childValue > maxSoFar) {
+    		  maxSoFar = childValue;
     	  }
       }
       return maxSoFar;
@@ -74,8 +74,9 @@ public class Minimax {
     	  arc = (Action)li.next();
     	  child.update(arc);
     	  childValue = maxValue(child);
-    	  if(child.getUtility() < minSoFar) {
-    		  minSoFar = child.getUtility();
+    	  if(childValue < minSoFar) {
+    		  
+    		  minSoFar = childValue;
     	  }
       }
       return minSoFar;

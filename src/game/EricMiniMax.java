@@ -74,7 +74,7 @@ public class EricMiniMax extends Player implements agent.Agent {
 	
 	public EricMiniMax(boolean isRed) {
 		super(isRed, "Eric - MiniMax Agent");
-		this.nodeInfo = new CheXNodeInfo(isRed, 3);
+		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
 		
 		System.out.println();
