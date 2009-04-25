@@ -20,11 +20,36 @@ import java.util.*;
 public class Minimax {
 
   NodeInfo nodeInfo;
-  ArrayList visited;
+  ArrayList<Node> visited;
 
   public Minimax (NodeInfo nodeInfo) {
     this.nodeInfo = nodeInfo;
-    visited = new ArrayList();
+    visited = new ArrayList<Node>();
+  }
+  
+  /**
+   * Reset because I do a minimax search for each move and need to clear the visited array
+   * otherwise I get a stack out of memory.
+   */
+  
+  public void reset() {
+	  visited.clear();
+  }
+  
+  /**
+   * The occurs check for the visited nodes.
+   * @param node The node to be checked. 
+   * @return true if the node has already been seen and false otherwise.
+   */
+  private boolean nodeExists(Node node) {
+	  
+	  for(Iterator<Node> nodes = visited.iterator(); nodes.hasNext(); ) {
+		  if(node.getState().equals(nodes.next())) {
+			  return true;
+		  }
+		  
+	  }
+	  return false;
   }
 
   /**
@@ -46,9 +71,12 @@ public class Minimax {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
     	  child.update(arc);
-    	  childValue = minValue(child);
-    	  if(childValue > maxSoFar) {
-    		  maxSoFar = childValue;
+    	  if(!nodeExists(child)) {
+    		  this.visited.add(child);
+			  childValue = minValue(child);
+			  if(childValue > maxSoFar) {
+				  maxSoFar = childValue;
+			  }
     	  }
       }
       return maxSoFar;
@@ -73,10 +101,13 @@ public class Minimax {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
     	  child.update(arc);
-    	  childValue = maxValue(child);
-    	  if(childValue < minSoFar) {
-    		  
-    		  minSoFar = childValue;
+    	  if(!nodeExists(child)) {
+    		  this.visited.add(child);
+	    	  childValue = maxValue(child);
+	    	  if(childValue < minSoFar) {
+	    		  
+	    		  minSoFar = childValue;
+	    	  }
     	  }
       }
       return minSoFar;

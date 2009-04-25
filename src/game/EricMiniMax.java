@@ -105,6 +105,7 @@ public class EricMiniMax extends Player implements agent.Agent {
 				 Board clone = (Board)board.clone();
 				 clone.update(move);
 				 bestMoveValuePairs.add(new MoveValuePair(move, search.minValue(new Node(clone))));
+				 search.reset();
 			 }
 		 }
 		 
