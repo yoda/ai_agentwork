@@ -1,11 +1,12 @@
 Game:	CheX, 60, 6, gui
-Red:	samplePlayers.Arnie
-Blue:	game.EricSRA
+Red:	game.EricMiniMax
+Blue:	samplePlayers.Marvin
 Player: game.EricNSRD
 Player: game.EricNSRM
 Player: game.EricNSRT
 Player: game.EricSUA
-Player: samplePlayers.Marvin
+Player: samplePlayers.Arnie
+Player: game.EricSRA
 Player: samplePlayers.Hal
 Setup:
     ..wnqknw..

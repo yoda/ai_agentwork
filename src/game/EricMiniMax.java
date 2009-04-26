@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import search.DepthLimitedSearch;
+import search.Minimax;
 import search.Node;
 
 import agent.Action;
@@ -51,32 +52,19 @@ import mixmeta4.Player;
  */
 
 /*
- * function Minimax-Decision(game) returns an operator
-   for each op in Operators[game] do
-        Value[op] ← Minimax-Value(Apply(op, game), game)
-   end
-   return the op with the highest Value[op]
-function Minimax-Value(state, game) returns a utility value
-   if Terminal-Test[game](state) then
-        return Utility[game](state)
-   else if max is to move in state then
-        return the highest Minimax-Value of Successors(state)
-   else
-        return the lowest Minimax-Value of Successors(state)
-
+ * 
  */
 
-public class EricSUA extends Player implements agent.Agent {
+public class EricMiniMax extends Player implements agent.Agent {
 
 	CheXNodeInfo nodeInfo;
 	Random random;
-	int maxPly;
 	
-	public EricSUA(boolean isRed) {
-		super(isRed, "Eric - Simple Utility Agent");
-		this.nodeInfo = new CheXNodeInfo(isRed, 16);
+	public EricMiniMax(boolean isRed) {
+		super(isRed, "Eric - MiniMax Agent");
+		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
-		maxPly = 16;
+		
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
@@ -86,31 +74,41 @@ public class EricSUA extends Player implements agent.Agent {
 	public Action getAction(Percept cP) {
 		 Board board = (Board) cP;
 		 Moves fullMoveList = (Moves)board.getActions();
+		 Minimax search = new Minimax(this.nodeInfo);
 		 
+		 
+		 // Depending on which colour the agent is select all the relative pieces.
 		 PieceSet currentPieceSet = board.getRedPieces();
 		 if(this.isRed) {
 		 } else {
 			 currentPieceSet = board.getBlackPieces();
 		 }
 			 
-		 // Get list of all my current pieces.
-		 
+		 // Get list of agents current pieces.
 	     ArrayList<MoveValuePair> bestMoveValuePairs = new ArrayList<MoveValuePair>();
 		 for(Iterator<Piece> piece  = currentPieceSet.iterator(); piece.hasNext(); ) {
 			 
 			 Piece currentPiece = piece.next();
+			 // For each piece get its possible moves
 			 for(Iterator<Move> moves = ((Moves)(board.getActions(currentPiece))).iterator(); moves.hasNext(); ) {
 				 Move move = moves.next();
 				 Board clone = (Board)board.clone();
 				 clone.update(move);
-				 bestMoveValuePairs.add(new MoveValuePair(move, optimumMoveValueForPiece(board, clone)));
+				 // Update the board and send each updated board off to minimax for evaluation.
+				 bestMoveValuePairs.add(new MoveValuePair(move, search.minValue(new Node(clone), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)));
+				 // Reset the search list.
+				 search.reset();
 			 }
 		 }
 		 
+		 
 		 double best = Double.NEGATIVE_INFINITY;
+		 // If for some reason the list of moves doesnt exist or something, a random move will be returned.
 		 Move bestMove = (Move)fullMoveList.get(random.nextInt(fullMoveList.size()));
 		 
+		 // Find the move with the highest Utility.
 		 for(Iterator<MoveValuePair> findBest = bestMoveValuePairs.iterator(); findBest.hasNext(); ) {
+			 
 			 MoveValuePair currentPair = findBest.next();
 			 if(currentPair.getValue() > best) {
 				 best = currentPair.getValue();
@@ -120,75 +118,7 @@ public class EricSUA extends Player implements agent.Agent {
 	     return bestMove;
 	}
 	
-	// Must return the max value for me for the piece that was moved for this board.
-	public double optimumMoveValueForPiece(Board original, Board withMove) {
-		int nPly = 0;
-		double result = 0;
-		
-		result = minForO(original, withMove, nPly);
-		return result;
-	}
-	
-	public double maxForP(Board original, Board withMove, int nPly) {
-		double result = 0;
-		double maxValue = Double.NEGATIVE_INFINITY;
-		ArrayList<MoveValuePair> bestMoveValuePairs = new ArrayList<MoveValuePair>();
-		
-		nPly++;
-		if(nPly > maxPly) {
-			return 0;
-		}
-		
-		for(Iterator<Move> pMove = withMove.getActions().iterator(); pMove.hasNext(); ) {
-			Move currentMove = pMove.next();
-			Board clone = (Board)withMove.clone();
-			clone.update(currentMove);
-			bestMoveValuePairs.add(new MoveValuePair(currentMove, nodeInfo.utility(new Node(clone, new Actions()))));
-		}
-		
-		Move bestMove = (Move)withMove.getActions().get(random.nextInt(withMove.getActions().size()));
-		for(Iterator<MoveValuePair> findBest = bestMoveValuePairs.iterator(); findBest.hasNext(); ) {
-			 MoveValuePair currentPair = findBest.next();
-			 if(currentPair.getValue() > maxValue) {
-				 maxValue = currentPair.getValue();
-				 bestMove = currentPair.getMove();
-			 }
-		 }
-		 withMove.update(bestMove);
-		 result += minForO(original, withMove, nPly);
-		 return result;
-	}
-	
-	public double minForO(Board original, Board withMove, int nPly) {
-		double result = 0;
-		double minValue = Double.NEGATIVE_INFINITY;
-		ArrayList<MoveValuePair> worstMoveValuePairs = new ArrayList<MoveValuePair>();
-		
-		nPly++;
-		if(nPly > maxPly) {
-			return 0;
-		}
-		
-		for(Iterator<Move> oMove = withMove.getActions().iterator(); oMove.hasNext(); ) {
-			Move currentMove = oMove.next();
-			Board clone = (Board)withMove.clone();
-			clone.update(currentMove);
-			worstMoveValuePairs.add(new MoveValuePair(currentMove, nodeInfo.utility(new Node(clone, new Actions()))));
-		}
-		
-		Move worstMove = (Move)withMove.getActions().get(random.nextInt(withMove.getActions().size()));
-		for(Iterator<MoveValuePair> findWorst = worstMoveValuePairs.iterator(); findWorst.hasNext(); ) {
-			 MoveValuePair currentPair = findWorst.next();
-			 if(currentPair.getValue() > minValue) {
-				 minValue = currentPair.getValue();
-				 worstMove = currentPair.getMove();
-			 }
-		 }
-		 withMove.update(worstMove);
-		 result += maxForP(original, withMove, nPly);
-		 return result;
-	}
-	
+	// Group subclass
 	public class MoveValuePair {
 		
 		Move move;
