@@ -22,7 +22,7 @@ public class Play {
 
     Player red = new EricMiniMax(true);
 //    Player red = new Hal(true);
-    Player black = new Hal(false);
+    Player black = new Marvin(false);
     
     int redwins = 0;
     int blackwins = 0;
@@ -46,7 +46,7 @@ public class Play {
 
 	// the following runs game automatically without using gui
 	Game game = new Game("CheX",setup,red,black, 60, 6, "terminal");
-	for(int x = 0; x < 2; x++) {
+	for(int x = 0; x < 10; x++) {
 		
 		while (!game.gameIsOver()) game.step();
 		if(game.blackWon()) {

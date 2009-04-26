@@ -12,7 +12,7 @@ import agent.*;
 /**
  * Note: direct access to instance variables is deprecated. Use get/set methods.
  */
-public class Node {
+public class Node implements Comparable<Node> {
 
   public State state;
   public Actions path;
@@ -61,5 +61,17 @@ public class Node {
 
   public double getUtility () {return utility;}  
   public void setUtility (double utility) {this.utility = utility;}
+
+	@Override
+	public int compareTo(Node second) {
+		if(this.getUtility() == second.getUtility() && this.getState().equals(second.getState())) {
+			return 0;
+		}
+		if(this.getUtility() > second.getUtility()) {
+			return -1;
+		}
+		
+		return 1;
+	}
 
 }

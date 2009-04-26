@@ -46,13 +46,13 @@ public class Run {
 		
 		Random random = new Random();
 		double dbl = 0;
-		int nItems = 10000;
+		int nItems = 10000; // Put Ten thousand items in.
 		for(int z = 0; z < nItems; z++) {
 			dbl = random.nextDouble();
 			list1.add(run.new MoveValuePair(null, dbl));
 			list2.add(run.new MoveValuePair(null, dbl));
 		}
-		
+		list1.add(run.new MoveValuePair(null, 2.40));
 		
 		int x = 0;
 		long l1finish;
@@ -82,7 +82,11 @@ public class Run {
 		
 		System.out.println(list1.getClass().toString() + " sorted in: " + (l1finish - l1start) + "ms");
 		System.out.println(list2.getClass().toString() + " sorted in: " + (l2finish - l2start) + "ms");
-		
+		int q = Collections.binarySearch(list1, run.new MoveValuePair(null, 2.40));
+		int r = Collections.binarySearch(list1, run.new MoveValuePair(null, 2.41));
+		System.out.println(q);
+		System.out.println(r);
+		System.out.println(((int)(100 * 0.5)));
 	}
 	
 	public class MoveValuePair implements Comparable<MoveValuePair>, Comparator<MoveValuePair> {

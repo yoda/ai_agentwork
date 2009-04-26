@@ -42,12 +42,10 @@ public class Minimax {
    * @return true if the node has already been seen and false otherwise.
    */
   private boolean nodeExists(Node node) {
-	  
-	  for(Iterator<Node> nodes = visited.iterator(); nodes.hasNext(); ) {
-		  if(node.getState().equals(nodes.next())) {
-			  return true;
-		  }
-		  
+	  Collections.sort(this.visited);
+	  int x = Collections.binarySearch(visited, node);
+	  if(x >= 0) {
+		  return true;
 	  }
 	  return false;
   }
@@ -88,7 +86,9 @@ public class Minimax {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
     	  child.update(arc);
+    	 
     	  if(!nodeExists(child)) {
+    		  child.setUtility(nodeInfo.utility(child));
     		  this.visited.add(child);
     		  alpha = Math.max(alpha, minValue(child, alpha, beta));
     		  if(alpha >= beta) {
@@ -105,7 +105,7 @@ public class Minimax {
   }
 
   /**
-   * @return the lowest value Min can achieve at this node with optimal play
+   * @return the lowest value Min can achieve at this node with optimal play.
    */
   public double minValue (Node visit, double alpha, double beta) {
     double minSoFar = Double.POSITIVE_INFINITY;
@@ -122,7 +122,9 @@ public class Minimax {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
     	  child.update(arc);
+    	  
     	  if(!nodeExists(child)) {
+    		  child.setUtility(nodeInfo.utility(child));
     		  this.visited.add(child);
     		  beta = Math.min(beta, maxValue(child, alpha, beta));
     		  if(beta <= alpha) {

@@ -1,6 +1,10 @@
 package game;
 
+import game.Run.MoveValuePair;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -59,12 +63,13 @@ public class EricMiniMax extends Player implements agent.Agent {
 
 	CheXNodeInfo nodeInfo;
 	Random random;
+	double ratio;
 	
 	public EricMiniMax(boolean isRed) {
 		super(isRed, "Eric - MiniMax Agent");
 		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
-		
+		ratio = 1; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
@@ -107,19 +112,19 @@ public class EricMiniMax extends Player implements agent.Agent {
 		 Move bestMove = (Move)fullMoveList.get(random.nextInt(fullMoveList.size()));
 		 
 		 // Find the move with the highest Utility.
-		 for(Iterator<MoveValuePair> findBest = bestMoveValuePairs.iterator(); findBest.hasNext(); ) {
-			 
-			 MoveValuePair currentPair = findBest.next();
-			 if(currentPair.getValue() > best) {
-				 best = currentPair.getValue();
-				 bestMove = currentPair.getMove();
-			 }
+		 Collections.sort(bestMoveValuePairs);
+		 int index = 0;
+		 if(random.nextInt((int)(100 * ratio)) == 0 && bestMoveValuePairs.size() > 1) {
+			 System.out.println("Might be random here...");
+			 index = random.nextInt(2);
 		 }
+		 
+		 bestMove = bestMoveValuePairs.get(index).getMove();
 	     return bestMove;
 	}
 	
 	// Group subclass
-	public class MoveValuePair {
+	public class MoveValuePair implements Comparable<MoveValuePair>, Comparator<MoveValuePair> {
 		
 		Move move;
 		double value;
@@ -136,6 +141,45 @@ public class EricMiniMax extends Player implements agent.Agent {
 		public Move getMove() {
 			return this.move;
 		}
+		
+		public String toString() {
+			String result = "";
+			if(this.move != null) {
+				result += getMove().toString();
+				result += " : ";
+				result += getValue();
+				return result;
+			}
+			result += "null : ";
+			result += getValue();
+			return result;
+		}
+
+		@Override
+		public int compare(MoveValuePair first, MoveValuePair second) {
+						
+			if(first.getValue() == second.getValue()) {
+				return 0;
+			}
+			if(first.getValue() > second.getValue()) {
+				return -1;
+			}
+			
+			return 1;
+		}
+
+		@Override
+		public int compareTo(MoveValuePair second) {
+			if(this.getValue() == second.getValue()) {
+				return 0;
+			}
+			if(this.getValue() > second.getValue()) {
+				return -1;
+			}
+			
+			return 1;
+		}
+		
 	}
 
 }
