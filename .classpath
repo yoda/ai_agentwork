@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="data/samplePlayers-3.2.jar"/>
 	<classpathentry kind="lib" path="data/charts4j-1.0/lib/charts4j-1.0.jar"/>
 	<classpathentry kind="lib" path="data/charts4j-1.0/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="data/bb.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

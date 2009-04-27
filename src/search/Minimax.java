@@ -42,7 +42,7 @@ public class Minimax {
    * @return true if the node has already been seen and false otherwise.
    */
   private boolean nodeExists(Node node) {
-	  Collections.sort(this.visited);
+	  
 	  int x = Collections.binarySearch(visited, node);
 	  if(x >= 0) {
 		  return true;
@@ -90,6 +90,7 @@ public class Minimax {
     	  if(!nodeExists(child)) {
     		  child.setUtility(nodeInfo.utility(child));
     		  this.visited.add(child);
+    		  Collections.sort(this.visited);
     		  alpha = Math.max(alpha, minValue(child, alpha, beta));
     		  if(alpha >= beta) {
     			  return beta;
