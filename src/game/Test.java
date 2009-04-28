@@ -1,6 +1,6 @@
 package game;
 
-import game.Run.MoveValuePair;
+import game.MoveValuePair;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,19 +20,26 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-	    Callable<Integer> task = new Callable<Integer>() {
+	    Callable<Integer> task1 = new Callable<Integer>() {
 	    	public Integer call() {
-	    		
+	    		return testFillLL();
 	    	}
 	    };
 	    
-	    System.out.println("CheX Game: " + new Benchmark(task));
+	    Callable<Integer> task2 = new Callable<Integer>() {
+	    	public Integer call() {
+	    		return testFillAL();
+	    	}
+	    };
+	    
+	    System.out.println("Benchmark LinkedList Fill: " + new Benchmark(task1));
+	    System.out.println("Benchmark ArrayList Fill: " + new Benchmark(task2));
 
 	}
 
-	public int testFill() {
+	public static int testFillLL() {
 		List<MoveValuePair> list1 = new LinkedList<MoveValuePair>();
-		List<MoveValuePair> list2 = new ArrayList<MoveValuePair>();
+		
 		
 		Random random = new Random();
 		double dbl = 0;
@@ -40,7 +47,23 @@ public class Test {
 		for(int z = 0; z < nItems; z++) {
 			dbl = random.nextDouble();
 			list1.add(new MoveValuePair(null, dbl));
+		
+		}
+		return 1;
+	}
+	
+	public static int testFillAL() {
+		
+		List<MoveValuePair> list2 = new ArrayList<MoveValuePair>();
+		
+		Random random = new Random();
+		double dbl = 0;
+		int nItems = 10000; // Put Ten thousand items in.
+		for(int z = 0; z < nItems; z++) {
+			dbl = random.nextDouble();
+		
 			list2.add(new MoveValuePair(null, dbl));
 		}
+		return 1;
 	}
 }

@@ -87,10 +87,10 @@ public class Minimax {
     	  arc = (Action)li.next();
     	  child.update(arc);
     	 
-    	  if(!nodeExists(child)) {
+   // 	  if(!nodeExists(child)) {
     		  child.setUtility(nodeInfo.utility(child));
-    		  this.visited.add(child);
-    		  Collections.sort(this.visited);
+    //		  this.visited.add(child);
+    //		  Collections.sort(this.visited);
     		  alpha = Math.max(alpha, minValue(child, alpha, beta));
     		  if(alpha >= beta) {
     			  return beta;
@@ -98,7 +98,7 @@ public class Minimax {
 			  childValue = alpha;
 			  if(childValue > maxSoFar) {
 				  maxSoFar = childValue;
-			  }
+	//		  }
     	  }
       }
       return maxSoFar;
@@ -124,9 +124,10 @@ public class Minimax {
     	  arc = (Action)li.next();
     	  child.update(arc);
     	  
-    	  if(!nodeExists(child)) {
+    	//  if(!nodeExists(child)) {
     		  child.setUtility(nodeInfo.utility(child));
-    		  this.visited.add(child);
+    	//	  this.visited.add(child);
+    	//	  Collections.sort(this.visited);
     		  beta = Math.min(beta, maxValue(child, alpha, beta));
     		  if(beta <= alpha) {
     			  return alpha;
@@ -135,7 +136,7 @@ public class Minimax {
 	    	  if(childValue < minSoFar) {
 	    		  minSoFar = childValue;
 	    	  }
-    	  }
+    	//  }
       }
       return minSoFar;
     }
