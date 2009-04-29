@@ -27,24 +27,25 @@ public class CheXNodeInfo implements NodeInfo {
 	boolean isRed;
 	double depthlimit;
 	
-	int king = 11;
+	int king = 100;
 	String aKing = (new King(false, false)).toString().toLowerCase();
 	int queen = 9;
 	String aQueen = (new Queen(false, false)).toString().toLowerCase();
-	int egg = 1;
+	int egg = 3;
 	String anEgg = (new Egg(false, false)).toString().toLowerCase();
-	int frogger = 1;
+	int frogger = 8;
 	String aFrogger = (new Frogger(false, false)).toString().toLowerCase();
-	int galaxian = 2;
+	int galaxian = 8;
 	String aGalaxian = (new Galaxian(false, false)).toString().toLowerCase();
-	int winthrop = 5;
+	int winthrop = 7;
 	String aWinthrop = (new Winthrop(false, false)).toString().toLowerCase();
 	int pod = 3;
 	String aPod = (new Pod(false, false)).toString().toLowerCase();
-	int knight = 3;
+	int knight = 6;
 	String aKnight = (new Knight(false, false)).toString().toLowerCase();
 	
 	int takeable = 10;
+	int threat = 20;
 	
 	
 	public CheXNodeInfo(boolean isRed) {
@@ -157,7 +158,11 @@ public class CheXNodeInfo implements NodeInfo {
 				Point currentPosition = currentMove.getDestination();
 				if(board.getSquare(currentPosition).isOccupiedByRed()) {
 					black += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					red -= this.getPieceValue(board.getSquare(currentPosition).look());
+					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
+					black -= threatened;
+					if(threatened == 0) {
+						red -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
+					}
 					// If this piece can take, or if a piece can be taken.
 				}
 			}
@@ -171,10 +176,15 @@ public class CheXNodeInfo implements NodeInfo {
 			Moves currentPieceMoves = (Moves) board.getActions(currentPiece);
 			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 				Move currentMove = moves.next();
+				
 				Point currentPosition = currentMove.getDestination();
 				if(board.getSquare(currentPosition).isOccupiedByBlack()) {
 					red += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					black -= this.getPieceValue(board.getSquare(currentPosition).look());
+					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
+					red -= threatened;
+					if(threatened == 0) {
+						black -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
+					}	
 					// If this piece can take, or if a piece can be taken.
 				}
 			}
@@ -188,6 +198,41 @@ public class CheXNodeInfo implements NodeInfo {
 		
 		// If agent is playing as black make it black less the utility of red.
 		return black - red;
+	}
+	
+	private int checkForNextThreat(Board aboard, Move currentMove, Piece thepiece) {
+		Board temp = (Board)aboard.clone();
+		temp.update(currentMove);
+		if(temp.redToMove) {
+			for(Iterator<Piece> rpiece = aboard.getRedPieces().iterator(); rpiece.hasNext(); ) {
+				Piece currentPiece = rpiece.next();
+				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
+				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
+					Move nextMove = moves.next();
+					Point nextPosition = nextMove.getDestination();
+					if(temp.getSquare(nextPosition).isOccupiedByBlack()) {
+						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
+							return threat * this.getPieceValue(thepiece);
+						}
+					}
+				}
+			}
+		} else if(!temp.redToMove) {
+			for(Iterator<Piece> bpiece = aboard.getBlackPieces().iterator(); bpiece.hasNext(); ) {
+				Piece currentPiece = bpiece.next();
+				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
+				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
+					Move nextMove = moves.next();
+					Point nextPosition = nextMove.getDestination();
+					if(temp.getSquare(nextPosition).isOccupiedByRed()) {
+						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
+							return threat * this.getPieceValue(thepiece);
+						}
+					}
+				}
+			}
+		} 
+			return 0;
 	}
 
 }

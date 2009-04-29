@@ -96,10 +96,10 @@ public class Minimax {
     			  return beta;
     		  }
 			  childValue = alpha;
-			  if(childValue > maxSoFar) {
+	//		  if(childValue > maxSoFar) {
 				  maxSoFar = childValue;
 	//		  }
-    	  }
+    //	  }
       }
       return maxSoFar;
     }
@@ -133,9 +133,9 @@ public class Minimax {
     			  return alpha;
     		  }
 			  childValue = beta;
-	    	  if(childValue < minSoFar) {
+	  //  	  if(childValue < minSoFar) {
 	    		  minSoFar = childValue;
-	    	  }
+	    //	  }
     	//  }
       }
       return minSoFar;
