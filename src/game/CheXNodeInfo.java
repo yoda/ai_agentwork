@@ -149,7 +149,7 @@ public class CheXNodeInfo implements NodeInfo {
 		red += redPieces.numberOfQueens * this.queen;
 		red += redPieces.numberOfWinthrops * this.winthrop;
 		
-		// Black mobility
+		// Black mobility and ability to take
 		for(Iterator<Piece> bpiece = board.getBlackPieces().iterator(); bpiece.hasNext(); ) {
 			Piece currentPiece = bpiece.next();
 			Moves currentPieceMoves = (Moves) board.getActions(currentPiece);
@@ -158,19 +158,13 @@ public class CheXNodeInfo implements NodeInfo {
 				Point currentPosition = currentMove.getDestination();
 				if(board.getSquare(currentPosition).isOccupiedByRed()) {
 					black += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
-					black -= threatened;
-					if(threatened == 0) {
 						red -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
-					}
 					// If this piece can take, or if a piece can be taken.
 				}
 			}
-		//	black += currentPieceMoves.size(); // Number of moves this piece can move aka its "mobility".
-			
 		}
 
-		// Red mobility
+		// Red mobility and ability to take
 		for(Iterator<Piece> rpiece = board.getRedPieces().iterator(); rpiece.hasNext(); ) {
 			Piece currentPiece = rpiece.next();
 			Moves currentPieceMoves = (Moves) board.getActions(currentPiece);
@@ -180,15 +174,10 @@ public class CheXNodeInfo implements NodeInfo {
 				Point currentPosition = currentMove.getDestination();
 				if(board.getSquare(currentPosition).isOccupiedByBlack()) {
 					red += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
-					red -= threatened;
-					if(threatened == 0) {
 						black -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
-					}	
-					// If this piece can take, or if a piece can be taken.
 				}
 			}
-			//red += currentPieceMoves.size(); // Number of moves this piece can move aka its "mobility".
+	
 		}
 		
 		// If agent is playing as red, make it red less the utility of black.
@@ -200,39 +189,5 @@ public class CheXNodeInfo implements NodeInfo {
 		return black - red;
 	}
 	
-	private int checkForNextThreat(Board aboard, Move currentMove, Piece thepiece) {
-		Board temp = (Board)aboard.clone();
-		temp.update(currentMove);
-		if(temp.redToMove) {
-			for(Iterator<Piece> rpiece = aboard.getRedPieces().iterator(); rpiece.hasNext(); ) {
-				Piece currentPiece = rpiece.next();
-				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
-				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
-					Move nextMove = moves.next();
-					Point nextPosition = nextMove.getDestination();
-					if(temp.getSquare(nextPosition).isOccupiedByBlack()) {
-						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
-							return threat * this.getPieceValue(thepiece);
-						}
-					}
-				}
-			}
-		} else if(!temp.redToMove) {
-			for(Iterator<Piece> bpiece = aboard.getBlackPieces().iterator(); bpiece.hasNext(); ) {
-				Piece currentPiece = bpiece.next();
-				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
-				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
-					Move nextMove = moves.next();
-					Point nextPosition = nextMove.getDestination();
-					if(temp.getSquare(nextPosition).isOccupiedByRed()) {
-						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
-							return threat * this.getPieceValue(thepiece);
-						}
-					}
-				}
-			}
-		} 
-			return 0;
-	}
 
 }
