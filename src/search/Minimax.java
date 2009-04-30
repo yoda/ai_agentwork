@@ -88,20 +88,20 @@ public class Minimax {
     	  child.update(arc);
     	 
    // 	  if(!nodeExists(child)) {
-    		  child.setUtility(nodeInfo.utility(child));
+    //		  child.setUtility(nodeInfo.utility(child));
     //		  this.visited.add(child);
     //		  Collections.sort(this.visited);
     		  alpha = Math.max(alpha, minValue(child, alpha, beta));
     		  if(alpha >= beta) {
     			  return beta;
     		  }
-			  childValue = alpha;
+	//		  childValue = alpha;
 	//		  if(childValue > maxSoFar) {
-				  maxSoFar = childValue;
+	//			  maxSoFar = childValue;
 	//		  }
     //	  }
       }
-      return maxSoFar;
+      return alpha;
     }
   }
 
@@ -125,20 +125,20 @@ public class Minimax {
     	  child.update(arc);
     	  
     	//  if(!nodeExists(child)) {
-    		  child.setUtility(nodeInfo.utility(child));
+    	//	  child.setUtility(nodeInfo.utility(child));
     	//	  this.visited.add(child);
     	//	  Collections.sort(this.visited);
     		  beta = Math.min(beta, maxValue(child, alpha, beta));
     		  if(beta <= alpha) {
     			  return alpha;
     		  }
-			  childValue = beta;
+	//		  childValue = beta;
 	  //  	  if(childValue < minSoFar) {
-	    		  minSoFar = childValue;
+	  //  		  minSoFar = childValue;
 	    //	  }
     	//  }
       }
-      return minSoFar;
+      return beta;
     }
 
 

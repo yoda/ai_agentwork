@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import agent.Actions;
 
@@ -151,20 +152,22 @@ public class CheXNodeInfo implements NodeInfo {
 		red += redPieces.numberOfWinthrops * this.winthrop;
 		
 		// Black mobility
-		for(Iterator<Piece> bpiece = board.getBlackPieces().iterator(); bpiece.hasNext(); ) {
+		ListIterator<Piece> bpiece = board.getBlackPieces().listIterator();
+		while(bpiece.hasNext()) {
 			Piece currentPiece = bpiece.next();
 			Moves currentPieceMoves = (Moves) board.getActions(currentPiece);
-			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
+			ListIterator<Move> moves = currentPieceMoves.listIterator();
+			while(moves.hasNext()) {
 				Move currentMove = moves.next();
 				Point currentPosition = currentMove.getDestination();
-				int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
-				black -= threatened;
+	//			int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
+	//			black -= threatened;
 				if(board.getSquare(currentPosition).isOccupiedByRed()) {
 					black += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
 					
-					if(threatened == 0) {
+		//			if(threatened == 0) {
 						red -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
-					}
+			//		}
 					// If this piece can take, or if a piece can be taken.
 				}
 			}
@@ -173,20 +176,22 @@ public class CheXNodeInfo implements NodeInfo {
 		}
 
 		// Red mobility
-		for(Iterator<Piece> rpiece = board.getRedPieces().iterator(); rpiece.hasNext(); ) {
+		ListIterator<Piece> rpiece = board.getRedPieces().listIterator();
+		while(rpiece.hasNext()) {
 			Piece currentPiece = rpiece.next();
 			Moves currentPieceMoves = (Moves) board.getActions(currentPiece);
-			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
+			ListIterator<Move> moves = currentPieceMoves.listIterator();
+			while(moves.hasNext()) {
 				Move currentMove = moves.next();
 				
 				Point currentPosition = currentMove.getDestination();
-				int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
-				red -= threatened;
+		//		int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
+		//		red -= threatened;
 				if(board.getSquare(currentPosition).isOccupiedByBlack()) {
 					red += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					if(threatened == 0) {
+		//			if(threatened == 0) {
 						black -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
-					}	
+		//			}	
 					// If this piece can take, or if a piece can be taken.
 				}
 			}

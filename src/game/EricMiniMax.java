@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import javax.xml.bind.JAXBException;
 
 import org.xml.sax.SAXException;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 import search.DepthLimitedSearch;
 import search.Minimax;
@@ -99,18 +98,20 @@ public class EricMiniMax extends Player implements agent.Agent {
 			 
 		 // Get list of agents current pieces.
 	     ArrayList<MoveValuePair> bestMoveValuePairs = new ArrayList<MoveValuePair>();
-		 for(Iterator<Piece> piece  = currentPieceSet.iterator(); piece.hasNext(); ) {
+		 ListIterator<Piece> piece  = currentPieceSet.listIterator();
+		 while(piece.hasNext()) {
 			 
 			 Piece currentPiece = piece.next();
 			 // For each piece get its possible moves
-			 for(Iterator<Move> moves = ((Moves)(board.getActions(currentPiece))).iterator(); moves.hasNext(); ) {
+			 ListIterator<Move> moves = ((Moves)(board.getActions(currentPiece))).listIterator();
+			 while(moves.hasNext()) {
 				 Move move = moves.next();
 				 Board clone = (Board)board.clone();
 				 clone.update(move);
 				 // Update the board and send each updated board off to minimax for evaluation.
 				 bestMoveValuePairs.add(new MoveValuePair(move, search.minValue(new Node(clone), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)));
 				 // Reset the search list.
-				 search.reset();
+				// search.reset();
 			 }
 		 }
 		 
@@ -128,9 +129,9 @@ public class EricMiniMax extends Player implements agent.Agent {
 		 }
 		 
 		 bestMove = bestMoveValuePairs.get(index).getMove();
-		 System.out.println("Move utility: " + bestMoveValuePairs.get(index).getValue());
-		 System.out.println("Doing experiment: ");
-		 experiment(board);
+	//	 System.out.println("Move utility: " + bestMoveValuePairs.get(index).getValue());
+	//	 System.out.println("Doing experiment: ");
+	//	 experiment(board);
 	     return bestMove;
 	}
 	
