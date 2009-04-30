@@ -4,12 +4,12 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="data/jazzy-core.jar"/>
 	<classpathentry kind="lib" path="data/agent-3.2.jar"/>
-	<classpathentry kind="lib" path="data/mixmeta4-3.2.jar"/>
 	<classpathentry kind="lib" path="data/samplePlayers-3.2.jar"/>
 	<classpathentry kind="lib" path="data/charts4j-1.0/lib/charts4j-1.0.jar"/>
 	<classpathentry kind="lib" path="data/charts4j-1.0/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="data/lib/bb.jar"/>
 	<classpathentry kind="lib" path="data/lib/jsci-core.jar"/>
 	<classpathentry kind="lib" path="data/lib/mt-13.jar"/>
+	<classpathentry kind="lib" path="data/mixmeta4-3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
