@@ -17,6 +17,7 @@ import mixmeta4.Piece;
 import mixmeta4.PieceSet;
 import mixmeta4.Pod;
 import mixmeta4.Queen;
+import mixmeta4.Square;
 import mixmeta4.Winthrop;
 import search.Node;
 import search.NodeInfo;
@@ -27,7 +28,7 @@ public class CheXNodeInfo implements NodeInfo {
 	boolean isRed;
 	double depthlimit;
 	
-	int king = 100;
+	int king = 1;
 	String aKing = (new King(false, false)).toString().toLowerCase();
 	int queen = 9;
 	String aQueen = (new Queen(false, false)).toString().toLowerCase();
@@ -131,7 +132,7 @@ public class CheXNodeInfo implements NodeInfo {
 		black += blackPieces.numberOfEggs * this.egg;
 		black += blackPieces.numberOfFroggers * this.frogger;
 		black += blackPieces.numberOfGalaxians * this.galaxian;
-		black += blackPieces.numberOfKings * this.king;
+		black += blackPieces.numberOfKings * this.king * 1000;
 		black += blackPieces.numberOfKnights * this.knight;
 		black += blackPieces.numberOfPods * this.pod;
 		black += blackPieces.numberOfQueens * this.queen;
@@ -143,7 +144,7 @@ public class CheXNodeInfo implements NodeInfo {
 		red += redPieces.numberOfEggs * this.egg;
 		red += redPieces.numberOfFroggers * this.frogger;
 		red += redPieces.numberOfGalaxians * this.galaxian;
-		red += redPieces.numberOfKings * this.king;
+		red += redPieces.numberOfKings * this.king * 1000;
 		red += redPieces.numberOfKnights * this.knight;
 		red += redPieces.numberOfPods * this.pod;
 		red += redPieces.numberOfQueens * this.queen;
@@ -156,10 +157,11 @@ public class CheXNodeInfo implements NodeInfo {
 			for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 				Move currentMove = moves.next();
 				Point currentPosition = currentMove.getDestination();
+				int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
+				black -= threatened;
 				if(board.getSquare(currentPosition).isOccupiedByRed()) {
 					black += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
-					black -= threatened;
+					
 					if(threatened == 0) {
 						red -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
 					}
@@ -178,10 +180,10 @@ public class CheXNodeInfo implements NodeInfo {
 				Move currentMove = moves.next();
 				
 				Point currentPosition = currentMove.getDestination();
+				int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition));
+				red -= threatened;
 				if(board.getSquare(currentPosition).isOccupiedByBlack()) {
 					red += takeable * this.getPieceValue(board.getSquare(currentPosition).look());
-					int threatened = checkForNextThreat(board, currentMove, board.getSquare(currentPosition).look());
-					red -= threatened;
 					if(threatened == 0) {
 						black -= threat * this.getPieceValue(board.getSquare(currentPosition).look());
 					}	
@@ -200,33 +202,33 @@ public class CheXNodeInfo implements NodeInfo {
 		return black - red;
 	}
 	
-	private int checkForNextThreat(Board aboard, Move currentMove, Piece thepiece) {
+	private int checkForNextThreat(Board aboard, Move currentMove, Square thesquare) {
 		Board temp = (Board)aboard.clone();
 		temp.update(currentMove);
 		if(temp.redToMove) {
-			for(Iterator<Piece> rpiece = aboard.getRedPieces().iterator(); rpiece.hasNext(); ) {
+			for(Iterator<Piece> rpiece = temp.getRedPieces().iterator(); rpiece.hasNext(); ) {
 				Piece currentPiece = rpiece.next();
-				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
+				Moves currentPieceMoves = (Moves) temp.getActions(currentPiece);
 				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 					Move nextMove = moves.next();
 					Point nextPosition = nextMove.getDestination();
 					if(temp.getSquare(nextPosition).isOccupiedByBlack()) {
-						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
-							return threat * this.getPieceValue(thepiece);
+						if(temp.getSquare(nextPosition).equals(thesquare)) {
+							return threat * this.getPieceValue(thesquare.look());
 						}
 					}
 				}
 			}
 		} else if(!temp.redToMove) {
-			for(Iterator<Piece> bpiece = aboard.getBlackPieces().iterator(); bpiece.hasNext(); ) {
+			for(Iterator<Piece> bpiece = temp.getBlackPieces().iterator(); bpiece.hasNext(); ) {
 				Piece currentPiece = bpiece.next();
-				Moves currentPieceMoves = (Moves) aboard.getActions(currentPiece);
+				Moves currentPieceMoves = (Moves) temp.getActions(currentPiece);
 				for(Iterator<Move> moves = currentPieceMoves.iterator(); moves.hasNext(); ) {
 					Move nextMove = moves.next();
 					Point nextPosition = nextMove.getDestination();
 					if(temp.getSquare(nextPosition).isOccupiedByRed()) {
-						if(temp.getSquare(nextPosition).look().equals(thepiece)) {
-							return threat * this.getPieceValue(thepiece);
+						if(temp.getSquare(nextPosition).equals(thesquare)) {
+							return threat * this.getPieceValue(thesquare.look());
 						}
 					}
 				}

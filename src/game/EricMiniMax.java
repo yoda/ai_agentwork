@@ -2,11 +2,18 @@ package game;
 
 import game.Run.MoveValuePair;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
+
+import javax.xml.bind.JAXBException;
+
+import org.xml.sax.SAXException;
+
+import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 import search.DepthLimitedSearch;
 import search.Minimax;
@@ -21,6 +28,7 @@ import mixmeta4.Moves;
 import mixmeta4.Piece;
 import mixmeta4.PieceSet;
 import mixmeta4.Player;
+import mixmeta4.Square;
 
 /*
  * A one-step look-ahead agent will try each of the possible moves using,
@@ -120,7 +128,113 @@ public class EricMiniMax extends Player implements agent.Agent {
 		 }
 		 
 		 bestMove = bestMoveValuePairs.get(index).getMove();
+		 System.out.println("Move utility: " + bestMoveValuePairs.get(index).getValue());
+		 System.out.println("Doing experiment: ");
+		 experiment(board);
 	     return bestMove;
+	}
+	
+	private void experiment(Board theboard) {
+		Square[][] squareBoard = theboard.squares;
+		String row = "";
+		String col = "\n";
+		for(int y = 0; y < squareBoard[0].length; y++) {
+			for(int x = 0; x < squareBoard.length; x++) {
+				if(squareBoard[x][y] != null) {
+					row += squareBoard[x][y];
+				} else
+					row += "   ";
+				
+			}
+			row += col;
+		}
+		System.out.println(row);
+		for(Iterator<Piece> it = theboard.getRedPieces().iterator(); it.hasNext(); ) {
+			Piece thepiece = it.next();
+			arroundPiece(thepiece);
+			System.out.println();
+//			try {
+//				System.out.println("Piece: " + thepiece.toString() + " ThreatValue: " + checkPiece(theboard, thepiece));
+//			} catch (SAXException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (JAXBException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+	}
+	
+	private void arroundPiece(Piece thePiece) {
+		String block = "";
+		block += thePiece.square.neighbour(new Point(-1,1));
+		block += thePiece.square.neighbour(new Point(0,1));
+		block += thePiece.square.neighbour(new Point(1,1));
+		block += "\n";
+		block += thePiece.square.neighbour(new Point(-1,0));
+		block += thePiece.square;
+		block += thePiece.square.neighbour(new Point(1,0));
+		block += "\n";
+		block += thePiece.square.neighbour(new Point(-1,-1));
+		block += thePiece.square.neighbour(new Point(0,-1));
+		block += thePiece.square.neighbour(new Point(1,-1));
+		System.out.println(block);
+	}
+	
+	private int checkPiece(Board theBoard, Piece thePiece) throws SAXException, JAXBException {
+		Moves pieceMoves = (Moves)theBoard.getActions(thePiece);
+		int value = 0;
+		for(Iterator<Move> it = pieceMoves.iterator(); it.hasNext(); ) {
+			Move theMove = it.next();
+			if(theBoard.getSquare(theMove.getDestination()).isOccupiedByOpponent(theBoard.redToMove)) {
+				if(threatCheck(theBoard.getSquare(theMove.getDestination()), theBoard) != 0) {
+					value += nodeInfo.getPieceValue(theBoard.getSquare(theMove.getDestination()).look());
+				}		
+			}
+		}
+		return value;
+	}
+	
+	private int threatCheck(Square destination, Board theBoard) throws SAXException, JAXBException {
+		Square squareBoard[][] = theBoard.squares;
+		
+		int threat = 10;
+		int value = 0;
+		int col = destination.column;
+		int startcol = 0;
+		int endcol = theBoard.numColumns;
+		int row = destination.row;
+		int startrow = 0;
+		int endrow = theBoard.numRows;
+		if(col > 2) {
+			startcol = col - 2;
+		}
+		if(col < theBoard.numColumns - 2) {
+			endcol = col + 2;
+		}
+		if(row > 2) {
+			startrow = row - 2;
+		}
+		if(row < theBoard.numRows - 2) {
+			endrow = row + 2;
+		}
+		
+		for(int y = startcol; y < endcol; y++) {
+			for(int x = startrow; x < endrow; x++) {
+				if(squareBoard[y][x].isOccupiedByOpponent(theBoard.redToMove)) {
+					Piece possibleThreat = squareBoard[y][x].look();
+					Moves possibleThreatMoves = (Moves)theBoard.getActions(possibleThreat);
+					for(Iterator<Move> it = possibleThreatMoves.iterator(); it.hasNext(); ) {
+						Move theMove = it.next();
+						if(theBoard.getSquare(theMove.getDestination()).isOccupiedByOpponent(!theBoard.redToMove)) {
+							value += threat;
+						}
+					}
+				}
+			}
+		}
+		return value;
+		
 	}
 	
 	// Group subclass
