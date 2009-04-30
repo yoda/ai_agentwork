@@ -167,17 +167,23 @@ public class EricMiniMax extends Player implements agent.Agent {
 	
 	private void arroundPiece(Piece thePiece) {
 		String block = "";
+		
 		block += thePiece.square.neighbour(new Point(-1,1));
 		block += thePiece.square.neighbour(new Point(0,1));
 		block += thePiece.square.neighbour(new Point(1,1));
+		
 		block += "\n";
+		
 		block += thePiece.square.neighbour(new Point(-1,0));
 		block += thePiece.square;
 		block += thePiece.square.neighbour(new Point(1,0));
+		
 		block += "\n";
+		
 		block += thePiece.square.neighbour(new Point(-1,-1));
 		block += thePiece.square.neighbour(new Point(0,-1));
 		block += thePiece.square.neighbour(new Point(1,-1));
+		
 		System.out.println(block);
 	}
 	
