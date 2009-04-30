@@ -86,7 +86,7 @@ public class Minimax {
 				child = (Node)visit.clone();
 				arc = (Action)li.next();
 				child.update(arc);
-				child.setUtility(nodeInfo.utility(child));
+				//child.setUtility(nodeInfo.utility(child));
 				alpha = Math.max(alpha, minValue(child, alpha, beta));
 				if(alpha >= beta) {
 					return beta;
@@ -114,7 +114,7 @@ public class Minimax {
 				child = (Node)visit.clone();
 				arc = (Action)li.next();
 				child.update(arc);
-				child.setUtility(nodeInfo.utility(child));
+				//child.setUtility(nodeInfo.utility(child));
 				beta = Math.min(beta, maxValue(child, alpha, beta));
 				if(beta <= alpha) {
 					return alpha;

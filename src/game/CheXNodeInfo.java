@@ -1,4 +1,4 @@
-package game;
+package game; 
 
 import java.awt.Point;
 import java.util.Iterator;
