@@ -125,7 +125,7 @@ public class CheXNodeInfo implements NodeInfo {
 		Board board = (Board)node.getState();
 		int red = 0;
 		int black = 0;
-		
+		/*
 		if(!board.redToMove) {
 			int a = checkForAThreat(board); 
 			red -= a;
@@ -135,7 +135,7 @@ public class CheXNodeInfo implements NodeInfo {
 			red += b;
 			black -= b;
 		}
-		
+		*/
 		PieceSet blackPieces = board.getBlackPieces();
 		blackPieces.count();
 		// Black on board value
@@ -209,7 +209,7 @@ public class CheXNodeInfo implements NodeInfo {
 		}
 		*/
 		// If agent is playing as red, make it red less the utility of black.
-		if(this.isRed) {
+		if(!board.redToMove) {
 			return red - black;
 		}
 		
