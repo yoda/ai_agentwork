@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ListIterator;
 
 public class DataRead {
@@ -14,6 +15,7 @@ public class DataRead {
 		DataReader reader = new DataReader(filename);
 		
 		ArrayList<DataContainer> tempList = reader.readData();
+		Collections.sort(tempList);
 		System.out.println("Listing " + reader.getDirectoryname() + " contents:");
 		ListIterator<DataContainer> it = tempList.listIterator();
 		System.out.println(tempList.size());
