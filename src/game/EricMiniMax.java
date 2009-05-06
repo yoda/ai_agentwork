@@ -3,6 +3,7 @@ package game;
 import game.Run.MoveValuePair;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,14 +67,22 @@ import mixmeta4.Square;
  * 
  */
 
-public class EricMiniMax extends Player implements agent.Agent {
+public class EricMiniMax extends Player implements agent.Agent, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	CheXNodeInfo nodeInfo;
 	Random random;
 	double ratio;
+	String filename; 
+	DataWriter writer; 
 	
 	public EricMiniMax(boolean isRed) {
 		super(isRed, "Eric - MiniMax Agent");
+		filename = "testfile";
+		writer = new DataWriter(filename, filename + "dir");
 		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
 		ratio = 1; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
@@ -85,6 +94,7 @@ public class EricMiniMax extends Player implements agent.Agent {
 	@Override
 	public Action getAction(Percept cP) {
 		 Board board = (Board) cP;
+		 Board board2 = (Board)board.clone();
 		 System.out.println("Black time: " + board.game.getBlackTime());
 		 System.out.println("Red time: " + board.game.getRedTime());
 		 if(!nodeInfo.isRed) {
@@ -148,6 +158,20 @@ public class EricMiniMax extends Player implements agent.Agent {
 	//	 System.out.println("Move utility: " + bestMoveValuePairs.get(index).getValue());
 	//	 System.out.println("Doing experiment: ");
 	//	 experiment(board);
+		 board2.update(bestMove);
+		 DataContainer temp = new DataContainer((Board)cP);
+		 DataContainer temp2 = new DataContainer(board2);
+		 
+		 if(writer.writeData(temp)) {
+			 System.out.println("Successfully written!");
+			 writer.closeFile();
+		 }
+		 if(writer.writeData(temp2)) {
+			 System.out.println("Successfully written!");
+			 writer.closeFile();
+		 }
+		 
+		 
 	     return bestMove;
 	}
 	

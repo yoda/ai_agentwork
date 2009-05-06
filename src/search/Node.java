@@ -7,14 +7,20 @@
 //
 
 package search;
+import java.io.Serializable;
+
 import agent.*;
 
 /**
  * Note: direct access to instance variables is deprecated. Use get/set methods.
  */
-public class Node implements Comparable<Node> {
+public class Node implements Comparable<Node>, Serializable {
 
-  public State state;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+public State state;
   public Actions path;
   public double cost;
   public double utility;  // provided for efficiency only

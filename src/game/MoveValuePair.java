@@ -1,11 +1,16 @@
 package game;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import mixmeta4.Move;
 
-public class MoveValuePair implements Comparable<MoveValuePair>, Comparator<MoveValuePair> {
+public class MoveValuePair implements Comparable<MoveValuePair>, Comparator<MoveValuePair>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Move move;
 	double value;
 	

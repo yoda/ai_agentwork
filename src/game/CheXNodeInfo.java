@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -24,8 +25,12 @@ import search.Node;
 import search.NodeInfo;
 
 
-public class CheXNodeInfo implements NodeInfo {
+public class CheXNodeInfo implements NodeInfo, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	boolean isRed;
 	double depthlimit;
 	
@@ -33,17 +38,17 @@ public class CheXNodeInfo implements NodeInfo {
 	String aKing = (new King(false, false)).toString().toLowerCase();
 	int queen = 9;
 	String aQueen = (new Queen(false, false)).toString().toLowerCase();
-	int egg = 3;
+	int egg = 2;
 	String anEgg = (new Egg(false, false)).toString().toLowerCase();
-	int frogger = 8;
+	int frogger = 9;
 	String aFrogger = (new Frogger(false, false)).toString().toLowerCase();
-	int galaxian = 8;
+	int galaxian = 9;
 	String aGalaxian = (new Galaxian(false, false)).toString().toLowerCase();
-	int winthrop = 7;
+	int winthrop = 8;
 	String aWinthrop = (new Winthrop(false, false)).toString().toLowerCase();
-	int pod = 3;
+	int pod = 2;
 	String aPod = (new Pod(false, false)).toString().toLowerCase();
-	int knight = 6;
+	int knight = 7;
 	String aKnight = (new Knight(false, false)).toString().toLowerCase();
 	
 	int takeable = 10;
@@ -67,12 +72,21 @@ public class CheXNodeInfo implements NodeInfo {
 
 	@Override
 	public boolean isGoal(Node node) {
+		if(this.isRed && ((Board)node.getState()).blackKingTaken()) {
+			return true;
+		}
+		if(!this.isRed && ((Board)node.getState()).redKingTaken()) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean isTerminal(Node node) {
 		if(node.getPath().size() >= this.getDepthLimit()) {
+			return true;
+		}
+		if(((Board)node.getState()).redKingTaken() || ((Board)node.getState()).blackKingTaken()) {
 			return true;
 		}
 		return false;
@@ -136,25 +150,35 @@ public class CheXNodeInfo implements NodeInfo {
 			black -= b;
 		}
 		*/
+		
+		if(board.redKingTaken()) {
+			black += 1000;
+			red -= 1000;
+		}
 		PieceSet blackPieces = board.getBlackPieces();
 		blackPieces.count();
 		// Black on board value
 		black += blackPieces.numberOfEggs * this.egg;
 		black += blackPieces.numberOfFroggers * this.frogger;
 		black += blackPieces.numberOfGalaxians * this.galaxian;
-		black += blackPieces.numberOfKings * this.king * 1000;
+		black += blackPieces.numberOfKings * this.king; //* 1000;
 		black += blackPieces.numberOfKnights * this.knight;
 		black += blackPieces.numberOfPods * this.pod;
 		black += blackPieces.numberOfQueens * this.queen;
 		black += blackPieces.numberOfWinthrops * this.winthrop;
 		
+		
+		if(board.blackKingTaken()) {
+			black -= 1000;
+			red += 1000;
+		}
 		PieceSet redPieces = board.getRedPieces();
 		redPieces.count();
 		// Red on board value
 		red += redPieces.numberOfEggs * this.egg;
 		red += redPieces.numberOfFroggers * this.frogger;
 		red += redPieces.numberOfGalaxians * this.galaxian;
-		red += redPieces.numberOfKings * this.king * 1000;
+		red += redPieces.numberOfKings * this.king; //* 1000;
 		red += redPieces.numberOfKnights * this.knight;
 		red += redPieces.numberOfPods * this.pod;
 		red += redPieces.numberOfQueens * this.queen;
@@ -209,7 +233,7 @@ public class CheXNodeInfo implements NodeInfo {
 		}
 		*/
 		// If agent is playing as red, make it red less the utility of black.
-		if(!board.redToMove) {
+		if(this.isRed) {
 			return red - black;
 		}
 		
