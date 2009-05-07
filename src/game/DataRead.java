@@ -11,7 +11,7 @@ public class DataRead {
 	 */
 	public static void main(String[] args) {
 		
-		String filename = "testfiledir.2";
+		String filename = "testfiledir.3";
 		DataReader reader = new DataReader(filename);
 		
 		ArrayList<DataContainer> tempList = reader.readData();
