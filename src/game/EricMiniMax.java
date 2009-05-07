@@ -99,14 +99,14 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		 System.out.println("Red time: " + board.game.getRedTime());
 		 if(!nodeInfo.isRed) {
 			 if(board.game.getBlackTime() > 66000) {
-				 this.nodeInfo.setDepthLimit(4);
+				 //this.nodeInfo.setDepthLimit(4);
 			 } else {
 				 this.nodeInfo.setDepthLimit(2);
 			 }
 				 
 		 } else {
 			 if(board.game.getRedTime() > 66000) {
-				 this.nodeInfo.setDepthLimit(4);
+				 //this.nodeInfo.setDepthLimit(4);
 			 } else {
 				 this.nodeInfo.setDepthLimit(2);
 			 }

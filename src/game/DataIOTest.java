@@ -35,8 +35,8 @@ public class DataIOTest {
 		DataContainer data = new DataContainer(temp);
 		
 		String filename = "testfile";
-		DataWriter writer = new DataWriter(filename);
-		DataReader reader = new DataReader(filename);
+		DataWriter writer = new DataWriter(filename, filename + "dir");
+		DataReader reader = new DataReader(filename + "dir");
 		
 		if(writer.writeData(data)) {
 			System.out.println("Node written!");

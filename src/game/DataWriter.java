@@ -23,11 +23,11 @@ public class DataWriter {
 		this.directoryname = directoryname;
 		
 		int x = 0;
-		this.directory = new File(this.directoryname + "." + x);
-		while(this.directory.exists()) {	
-			this.directory = new File(this.directory.getAbsolutePath() + "." + x);
+		
+		do {	
+			this.directory = new File(this.directoryname + "." + x);
 			x++;
-		}
+		} while(this.directory.exists());
 		if(!this.directory.exists()) {
 			this.directory.mkdir();
 		}
@@ -43,12 +43,12 @@ public class DataWriter {
 	
 	public boolean writeData(DataContainer data) {
 		
-		file = new File(this.directory.getAbsolutePath() + "/" + filename);
+		
 		int x = 0;
-		while(file.exists()) {
+		do {
 			file = new File(this.directory.getAbsolutePath() + "/" + filename + "." + x);
 			x++;
-		}
+		} while(file.exists());
 		try {
 			file.createNewFile();
 			file.setWritable(true, true);

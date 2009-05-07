@@ -16,8 +16,10 @@ public class DataContainer implements Serializable, Comparable<DataContainer> {
 	private PieceSet redPieces;
 	private boolean redToMove;
 	private String theStringBoard;
+	private Board theBoard;
 	
 	public DataContainer(Board theBoard) {
+		this.theBoard = (Board)theBoard.clone();
 		this.themoves = (Moves)theBoard.getMovesSoFar().clone();
 		this.thesquares = theBoard.squares.clone();
 		this.theStringBoard = theBoard.toString();
@@ -26,11 +28,15 @@ public class DataContainer implements Serializable, Comparable<DataContainer> {
 		this.redToMove = theBoard.redToMove;
 	}
 	
+	public Board getTheBoard() {
+		return this.theBoard;
+	}
+	
 	public Moves getTheMoves() {
 		return this.themoves;
 	}
 	
-	public String getTheBoard() {
+	public String getTheStringBoard() {
 		return this.theStringBoard;
 	}
 	
