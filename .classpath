@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="data/lib/jsci-core.jar"/>
 	<classpathentry kind="lib" path="data/lib/mt-13.jar"/>
 	<classpathentry kind="lib" path="data/mixmeta4-3.3.jar"/>
+	<classpathentry kind="lib" path="data/jaDTi-0.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
