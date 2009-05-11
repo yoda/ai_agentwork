@@ -116,7 +116,7 @@ public class Attributes {
 	}
 	//@attribute -  means use which function will be used from above
 	public boolean[] getAll (Board board, PieceSet ps, int attribute) {
-		boolean result[] = {};
+		boolean result[] = new boolean[12];
 		Piece currentPiece;
 		ListIterator ls = ps.listIterator();
 		int i = 0;
