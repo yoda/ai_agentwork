@@ -51,6 +51,12 @@ public class ZooTest {
 	
 	printDot(tree);
 	
+	String temp = "[ ";
+	for(int x = 0; x < learningSet.item(0).toArray().length; x++) {
+		temp += learningSet.item(0).toArray()[x] + " ";
+	}
+	temp += "]";
+	System.out.println(temp);
 	printGuess(learningSet.item(0), tree);
     }
 
