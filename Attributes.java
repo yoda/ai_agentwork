@@ -9,6 +9,52 @@ public class Attributes {
 	static final int canmove = 1;
 	static final int cantake =2;
 	static final int canbetaken = 3;
+	static final int takeKing = 4;
+	static final int kingOnThread = 5;
+	
+	//a helper method to find the location of the king
+	//@return a Square, because a square can get both location and piece
+	private Square findKing (Board board, boolean isRed) {
+		PieceSet ps;
+		Piece currentPiece;
+		if (isRed) {
+			ps = board.getRedPieces();
+		} else {
+			ps = board.getBlackPieces();
+		}
+		ListIterator ls = ps.listIterator();
+		while (ls.hasNext()) {
+			currentPiece = (Piece) ls.next();
+			if (currentPiece.toString().toLowerCase().compareTo("k") == 0) {
+				return currentPiece.square;
+			}
+		}
+		return null;
+	}
+	
+	
+	public boolean takeKing (Board board) {
+		Moves move = (Moves) board.getActions();
+		Move currentMove;
+		ListIterator ls = move.listIterator();
+		//!board.redToMove because want to get opponent's king and it's my turn to move
+		Square kingLocation = findKing (board, !board.redToMove);
+		//get all my moves' destinations
+		while (ls.hasNext()) {
+			currentMove = (Move) ls.next();
+			if (currentMove.getDestination().distance(kingLocation.getLocation()) == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// can just call canBeTake function and the target piece will be my king
+	public boolean kingOnThread (Board board) {
+		Square sq = findKing(board, board.redToMove);
+		return canBeTaken(board, sq.look());
+		
+	}
 	
 	public boolean canMove (Board board, Piece which) {
 		if (board.getActions(which).size() > 0) {
@@ -39,7 +85,7 @@ public class Attributes {
 	public boolean canBeTaken (Board board, Piece which) {
 		Point location = which.square.getLocation();
 		boolean colour = which.isRed;
-		PieceSet opp;//opponent's pieceset
+		PieceSet opp;//opponent's pieceSet
 		if (colour) {
 			opp = board.getBlackPieces();
 		} else {
@@ -83,7 +129,6 @@ public class Attributes {
 			} else if (attribute ==3) {
 				result[i] = canBeTaken(board, currentPiece);
 			}
-			
 			i++;
 		}
 		return result;
