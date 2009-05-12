@@ -39,4 +39,16 @@ public class DataAtom implements Serializable {
 		return this.move;
 	}
 
+	public String toString() {
+		String result = "";
+		result += "[ Move: " + this.getMove().toString() + " ]";
+		for(int y = 0; y < this.getPieceAttributesSet().size(); y++) {
+			DataPieceAttributes dpa = this.getPieceAttributesSet().get(y);
+			result += "[ Piece: " + dpa.getPiece().toString() + " ]";
+			for(int z = 0; z < dpa.getAttributes().size(); z++) {
+				result += "[ " + dpa.getAttributes().get(z) + " : " + dpa.getResults().get(z) + " ]";
+			}
+		}
+		return result;
+	}
 }

@@ -1,5 +1,12 @@
 package game;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -10,22 +17,75 @@ import mixmeta4.Piece;
 
 public class DataProcessor {
 
-	private String directoryname;
+	private ArrayList<String> directories;
 	private ArrayList<Move> moves;
 	private Attributes atts;
 	private ArrayList<DataAtom> data;
+	private String directory;
+	private boolean debug = true;
+	private boolean writeable;
 	
-	public DataProcessor(String directoryname) {
-		this.directoryname = directoryname;
+	public DataProcessor(ArrayList<String> directories) {
+		this.directories = directories;
 		this.atts = new Attributes();
 		this.data = new ArrayList<DataAtom>();
+		this.writeable = false;
 	}
 	
-	public ArrayList<DataAtom> getData() {
+	public ArrayList<DataAtom> scanData() {
+		for(int x = 0; x < this.directories.size(); x++) {
+			this.scanOneDirectory(this.directories.get(x));
+		}
+		this.writeable = true;
 		return this.data;
+		
 	}
 	
-	public void scanData() {
+	public boolean writeData(String filename) {
+		if(!this.writeable) {
+			return false;
+		}
+
+		File file;
+		int x = 0;
+		do {
+			file = new File(filename + "." + x);
+			x++;
+		} while(file.exists());
+		try {
+			file.createNewFile();
+			file.setWritable(true, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+			if(debug) System.out.println("Unable to create file!");
+		}
+		FileOutputStream fos;
+		PrintStream pos;
+		if(file.canWrite()) {
+			try {
+				fos = new FileOutputStream(file, true);
+				pos = new PrintStream(fos);
+				for(int z = 0; z < this.data.size(); z++) {
+					pos.println(this.data.get(z).toString());
+				}
+			} catch (FileNotFoundException e) {
+				if(debug) System.out.println("Failed creating FileOutputStream!");
+				if(debug) e.printStackTrace();
+				return false;
+			}
+			pos.close();
+			try {
+				fos.close();
+			} catch (IOException e) {
+				if(debug) System.out.println("Unable to close FileOutputStream!");
+				if(debug) e.printStackTrace();
+			}
+			return true;
+		} 
+		return false;
+	}
+	
+	private void scanOneDirectory(String directoryname) {
 		DataReader reader = new DataReader(directoryname);
 		ArrayList<DataContainer> boards = reader.readData();
 		
@@ -85,10 +145,12 @@ public class DataProcessor {
 		}
 		*/
 		String dirname = "testfiledir.0";
+		ArrayList<String> directories = new ArrayList<String>();
+		directories.add(dirname);
 		System.out.println("Running the Data Processor over '" + dirname + "'.");
-		DataProcessor d = new DataProcessor(dirname);
-		d.scanData();
-		ArrayList<DataAtom> temp = d.getData();
+		DataProcessor d = new DataProcessor(directories);
+		ArrayList<DataAtom> temp = d.scanData();
+		d.writeData(dirname + ".results");
 		System.out.println("Size of temp: " + temp.size());
 		for(int x = 0; x < temp.size(); x++) {
 			System.out.println("Board: " + x);
