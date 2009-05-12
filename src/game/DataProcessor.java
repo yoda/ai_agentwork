@@ -14,6 +14,7 @@ import mixmeta4.Board;
 import mixmeta4.Move;
 import mixmeta4.Moves;
 import mixmeta4.Piece;
+import mixmeta4.PieceSet;
 
 public class DataProcessor {
 
@@ -88,45 +89,98 @@ public class DataProcessor {
 	private void scanOneDirectory(String directoryname) {
 		DataReader reader = new DataReader(directoryname);
 		ArrayList<DataContainer> boards = reader.readData();
+		PieceSet black = boards.get(0).getTheBoard().getBlackPieces();
+		if(debug) System.out.println("Number of blackPieces: " + black.size());
+		PieceSet white = boards.get(0).getTheBoard().getRedPieces();
+		if(debug) System.out.println("Number of whitePieces: " + white.size());
 		
-		
+		if(debug) System.out.println("Initialising the board iterator");
 		ListIterator<DataContainer> it = boards.listIterator();
 		int x = 0;
+		DataContainer board = it.next();
+		
+			
 		while(it.hasNext()) {
-			DataContainer board = it.next();
+			if(debug) System.out.println("Cycle x = " + x);
 			Moves theMoves = board.getTheMoves();
 			Move moi = null;
+			if(debug) System.out.println("Get the previous move...");
+			if(debug) System.out.println("theMoves size: " + theMoves.size());
 			if(theMoves.size() > 1) {
 				moi = (Move)theMoves.get(theMoves.size() - 1);
 			}
+			if(debug) System.out.println("Current Move of interest: " + moi);
+			if(debug) System.out.println("Conditional entering data population loop");
 			if(moi != null && board.getTheBoard().getSquare(moi.getDestination().getLocation()).isOccupiedByBlack()) {
 				DataAtom datum = new DataAtom();
 				datum.setKey(x);
-				datum.setMove(board.getTheBoard().lastMove);
+				datum.setMove(moi);
+				if(debug) System.out.println("Initialising both of the Piece iterators");
 				ListIterator<Piece> pieces = board.getTheBoard().getBlackPieces().listIterator();
-
-				while(pieces.hasNext()) {
-					DataPieceAttributes dpa = new DataPieceAttributes();
+				ListIterator<Piece> defaultset = black.listIterator();
+				boolean doOther = true;
+				if(pieces.hasNext()) {
 					Piece piece = pieces.next();
-					
-					dpa.setPiece(piece);
-					
-					dpa.addAttribute("canBeTaken");
-					dpa.addResult(atts.canBeTaken(board.getTheBoard(), piece));
-					
-					dpa.addAttribute("canMove");
-					dpa.addResult(atts.canMove(board.getTheBoard(), piece));
-					
-					dpa.addAttribute("canTake");
-					dpa.addResult(atts.canTake(board.getTheBoard(), piece));
-					
-					dpa.addAttribute("takeKing");
-					dpa.addResult(atts.takeKing(board.getTheBoard()));
-					datum.addPieceAttributes(dpa);
+					if(debug) System.out.println("Fill the data for each of the pieces loop");
+					while(defaultset.hasNext()) {
+						DataPieceAttributes dpa = new DataPieceAttributes();
+
+						Piece defaultPiece = defaultset.next();
+
+						if(piece.toString().compareTo(defaultPiece.toString()) != 0) {
+							dpa.setPiece(defaultPiece);
+
+							dpa.addAttribute("canBeTaken");
+							dpa.addResult(false);
+
+							dpa.addAttribute("canMove");
+							dpa.addResult(false);
+
+							dpa.addAttribute("canTake");
+							dpa.addResult(false);
+
+							dpa.addAttribute("takeKing");
+							dpa.addResult(false);
+							datum.addPieceAttributes(dpa);
+							if(pieces.hasNext()) {
+								piece = pieces.next();
+							}
+							//defaultPiece = defaultset.next();
+							doOther = false;
+
+						}
+						if(doOther) {
+							dpa.setPiece(piece);
+
+							dpa.addAttribute("canBeTaken");
+							dpa.addResult(atts.canBeTaken(board.getTheBoard(), piece));
+
+							dpa.addAttribute("canMove");
+							dpa.addResult(atts.canMove(board.getTheBoard(), piece));
+
+							dpa.addAttribute("canTake");
+							dpa.addResult(atts.canTake(board.getTheBoard(), piece));
+
+							dpa.addAttribute("takeKing");
+							dpa.addResult(atts.takeKing(board.getTheBoard()));
+							datum.addPieceAttributes(dpa);
+							if(pieces.hasNext()) {
+								piece = pieces.next();
+							}
+							//defaultPiece = defaultset.next();
+							
+						}
+						doOther = true;
+					}
 				}
-				x++;
+				
 				data.add(datum);
+				
+
 			}
+			x++;
+			board = it.next();
+
 			
 		}
 	}
