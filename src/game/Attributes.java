@@ -1,4 +1,4 @@
-package player;
+package game;
 import java.awt.Point;
 import java.util.ListIterator;
 import java.util.ArrayList;
