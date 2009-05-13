@@ -2,6 +2,7 @@ package game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import mixmeta4.Move;
 
@@ -38,17 +39,30 @@ public class DataAtom implements Serializable {
 	public Move getMove() {
 		return this.move;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		String result = "";
-		result += "[ Move: " + this.getMove().toString() + " ]";
+		result += this.getKey();
 		for(int y = 0; y < this.getPieceAttributesSet().size(); y++) {
 			DataPieceAttributes dpa = this.getPieceAttributesSet().get(y);
-			result += "[ Piece: " + dpa.getPiece().toString() + " ]";
+			//result += " " + dpa.getPiece().toString() + "";
 			for(int z = 0; z < dpa.getAttributes().size(); z++) {
-				result += "[ " + dpa.getAttributes().get(z) + " : " + dpa.getResults().get(z) + " ]";
+				result += " " + dpa.getResults().get(z) + "";
 			}
 		}
+		result += " " + this.removeSpaces(this.getMove().toString()) + "";
 		return result;
 	}
+	
+	private String removeSpaces(String s) {
+		  StringTokenizer st = new StringTokenizer(s," ",false);
+		  String t="";
+		  while (st.hasMoreElements()) t += st.nextElement();
+		  return t;
+  }
+
 }

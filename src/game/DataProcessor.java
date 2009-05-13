@@ -66,7 +66,13 @@ public class DataProcessor {
 			try {
 				fos = new FileOutputStream(file, true);
 				pos = new PrintStream(fos);
+				pos.println(";--++ This is javadb type file");
+				pos.println(";; Description : Moves mapped to pieces on specified attributes.");
+				pos.println("moves-database");
 				for(int z = 0; z < this.data.size(); z++) {
+					if(z == 0) {
+						pos.println("object key " + attributeString(this.data.get(z)) + "type symbolic");
+					}
 					pos.println(this.data.get(z).toString());
 				}
 			} catch (FileNotFoundException e) {
@@ -84,6 +90,18 @@ public class DataProcessor {
 			return true;
 		} 
 		return false;
+	}
+	
+	private String attributeString(DataAtom lineone) {
+		String result = "";
+		for(int y = 0; y < lineone.getPieceAttributesSet().size(); y++) {
+			DataPieceAttributes dpa = lineone.getPieceAttributesSet().get(y);
+			//result += " " + dpa.getPiece().toString() + "";
+			for(int z = 0; z < dpa.getAttributes().size(); z++) {
+				result +=  dpa.getPiece().toString() + y + dpa.getAttributes().get(z) + " symbolic ";
+			}
+		}
+		return result;
 	}
 	
 	private void scanOneDirectory(String directoryname) {
