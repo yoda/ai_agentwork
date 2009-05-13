@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class ZooTest {
 
-    final static String dbFileName = "testfiledir.0.results.32";
+    final static String dbFileName = "testfiledir.0.results.34";
     final static String jadtiURL = "http://www.run.montefiore.ulg.ac.be/" +
 	"~francois/software/jaDTi/";
     
@@ -41,54 +41,54 @@ public class ZooTest {
 //	testAttributesVector.add(attributeSet.findByName("domestic"));
 //	testAttributesVector.add(attributeSet.findByName("hair"));
 //	testAttributesVector.add(attributeSet.findByName("feathers"));
-	/*
-	testAttributesVector.add(attributeSet.findByName("e0canBeTaken"));
-	testAttributesVector.add(attributeSet.findByName("e0canMove"));
-	testAttributesVector.add(attributeSet.findByName("e0canTake")); 
-	testAttributesVector.add(attributeSet.findByName("e0takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("p1canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("p1canMove")); 
-	testAttributesVector.add(attributeSet.findByName("p1canTake")); 
-	testAttributesVector.add(attributeSet.findByName("p1takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("e2canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("e2canMove")); 
-	testAttributesVector.add(attributeSet.findByName("e2canTake")); 
-	testAttributesVector.add(attributeSet.findByName("e2takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("p3canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("p3canMove")); 
-	testAttributesVector.add(attributeSet.findByName("p3canTake")); 
-	testAttributesVector.add(attributeSet.findByName("p3takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("e4canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("e4canMove")); 
-	testAttributesVector.add(attributeSet.findByName("e4canTake")); 
-	testAttributesVector.add(attributeSet.findByName("e4takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("p5canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("p5canMove")); 
-	testAttributesVector.add(attributeSet.findByName("p5canTake")); 
-	testAttributesVector.add(attributeSet.findByName("p5takeKing"));
+	
+	testAttributesVector.add(attributeSet.findByName("ecanbetakena"));
+	testAttributesVector.add(attributeSet.findByName("ecanmovea"));
+	testAttributesVector.add(attributeSet.findByName("ecantakea")); 
+	testAttributesVector.add(attributeSet.findByName("etakekinga")); 
+	testAttributesVector.add(attributeSet.findByName("pcanbetakenb")); 
+	testAttributesVector.add(attributeSet.findByName("pcanmoveb")); 
+	testAttributesVector.add(attributeSet.findByName("pcantakeb")); 
+	testAttributesVector.add(attributeSet.findByName("ptakekingb")); 
+	testAttributesVector.add(attributeSet.findByName("ecanbetakenc")); 
+	testAttributesVector.add(attributeSet.findByName("ecanmovec")); 
+	testAttributesVector.add(attributeSet.findByName("ecantakec")); 
+	testAttributesVector.add(attributeSet.findByName("etakekingc")); 
+	testAttributesVector.add(attributeSet.findByName("pcanbetakend")); 
+	testAttributesVector.add(attributeSet.findByName("pcanmoved")); 
+	testAttributesVector.add(attributeSet.findByName("pcantaked")); 
+	testAttributesVector.add(attributeSet.findByName("ptakekingd")); 
+	testAttributesVector.add(attributeSet.findByName("ecanbetakene")); 
+	testAttributesVector.add(attributeSet.findByName("ecanmovee")); 
+	testAttributesVector.add(attributeSet.findByName("ecantakee")); 
+	testAttributesVector.add(attributeSet.findByName("etakekinge")); 
+	testAttributesVector.add(attributeSet.findByName("pcanbetakenf")); 
+	testAttributesVector.add(attributeSet.findByName("pcanmovef")); 
+	testAttributesVector.add(attributeSet.findByName("pcantakef")); 
+	testAttributesVector.add(attributeSet.findByName("ptakekingf"));
 	 
-	testAttributesVector.add(attributeSet.findByName("w6canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("w6canMove")); 
-	testAttributesVector.add(attributeSet.findByName("w6canTake")); 
-	testAttributesVector.add(attributeSet.findByName("w6takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("n7canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("n7canMove")); 
-	testAttributesVector.add(attributeSet.findByName("n7canTake")); 
-	testAttributesVector.add(attributeSet.findByName("n7takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("q8canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("q8canMove")); 
-	testAttributesVector.add(attributeSet.findByName("q8canTake")); 
-	testAttributesVector.add(attributeSet.findByName("q8takeKing"));
+	testAttributesVector.add(attributeSet.findByName("wcanbetakeng")); 
+	testAttributesVector.add(attributeSet.findByName("wcanmoveg")); 
+	testAttributesVector.add(attributeSet.findByName("wcantakeg")); 
+	testAttributesVector.add(attributeSet.findByName("wtakekingg")); 
+	testAttributesVector.add(attributeSet.findByName("ncanbetakenh")); 
+	testAttributesVector.add(attributeSet.findByName("ncanmoveh")); 
+	testAttributesVector.add(attributeSet.findByName("ncantakeh")); 
+	testAttributesVector.add(attributeSet.findByName("ntakekingh")); 
+	testAttributesVector.add(attributeSet.findByName("qcanbetakeni")); 
+	testAttributesVector.add(attributeSet.findByName("qcanmovei")); 
+	testAttributesVector.add(attributeSet.findByName("qcantakei")); 
+	testAttributesVector.add(attributeSet.findByName("qtakekingi"));
 	 
-	testAttributesVector.add(attributeSet.findByName("k9canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("k9canMove")); 
-	testAttributesVector.add(attributeSet.findByName("k9canTake")); 
-	testAttributesVector.add(attributeSet.findByName("k9takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("n10canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("n10canMove")); 
-	testAttributesVector.add(attributeSet.findByName("n10canTake")); 
-	testAttributesVector.add(attributeSet.findByName("n10takeKing"));
-	*/ 
+	testAttributesVector.add(attributeSet.findByName("kcanbetakenj")); 
+	testAttributesVector.add(attributeSet.findByName("kcanmovej")); 
+	testAttributesVector.add(attributeSet.findByName("kcantakej")); 
+	testAttributesVector.add(attributeSet.findByName("ktakekingj")); 
+	testAttributesVector.add(attributeSet.findByName("ncanbetakenba")); 
+	testAttributesVector.add(attributeSet.findByName("ncanmoveba")); 
+	testAttributesVector.add(attributeSet.findByName("ncantakeba")); 
+	testAttributesVector.add(attributeSet.findByName("ntakekingba"));
+	 
 	testAttributesVector.add(attributeSet.findByName("wcanbetakenbb")); 
 	testAttributesVector.add(attributeSet.findByName("wcanmovebb")); 
 	testAttributesVector.add(attributeSet.findByName("wcantakebb"));

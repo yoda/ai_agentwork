@@ -85,7 +85,7 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		writer = new DataWriter(filename, filename + "dir");
 		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
-		ratio = 1; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
+		ratio = 0.5; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");

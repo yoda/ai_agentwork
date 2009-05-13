@@ -71,7 +71,7 @@ public class DataProcessor {
 				pos.println("moves-database");
 				for(int z = 0; z < this.data.size(); z++) {
 					if(z == 0) {
-						pos.println("object key " + attributeString(this.data.get(z)) + "type symbolic");
+						pos.println("object name " + attributeString(this.data.get(z)) + "type symbolic");
 					}
 					pos.println(this.data.get(z).toString());
 				}
@@ -263,8 +263,16 @@ public class DataProcessor {
 		}
 		*/
 		String dirname = "testfiledir.0";
+		String dirname1 = "testfiledir.1";
+		String dirname2 = "testfiledir.2";
+		String dirname3 = "testfiledir.3";
+		String dirname4 = "testfiledir.4";
 		ArrayList<String> directories = new ArrayList<String>();
 		directories.add(dirname);
+		directories.add(dirname1);
+		directories.add(dirname2);
+		directories.add(dirname3);
+		directories.add(dirname4);
 		System.out.println("Running the Data Processor over '" + dirname + "'.");
 		DataProcessor d = new DataProcessor(directories);
 		ArrayList<DataAtom> temp = d.scanData();
