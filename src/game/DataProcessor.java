@@ -92,13 +92,57 @@ public class DataProcessor {
 		return false;
 	}
 	
+	private int convertAlphaToDigit(String x) {
+		return 0;
+	}
+	
+	private String convertDigitToAlpha(int x) {
+		String initial = "" + x;
+		String result = "";
+		for(int y = 0; y < initial.length(); y++) {
+			switch(Character.getNumericValue(initial.charAt(y))) {
+				case 0 :
+					result += "a";
+					break;
+				case 1 :
+					result += "b";
+					break;
+				case 2 :
+					result += "c";
+					break;
+				case 3 :
+					result += "d";
+					break;
+				case 4 :
+					result += "e";
+					break;
+				case 5 :
+					result += "f";
+					break;
+				case 6 :
+					result += "g";
+					break;
+				case 7 :
+					result += "h";
+					break;
+				case 8 :
+					result += "i";
+					break;
+				case 9 :
+					result += "j";
+					break;
+			}	
+		}
+		return result;
+	}
+	
 	private String attributeString(DataAtom lineone) {
 		String result = "";
 		for(int y = 0; y < lineone.getPieceAttributesSet().size(); y++) {
 			DataPieceAttributes dpa = lineone.getPieceAttributesSet().get(y);
 			//result += " " + dpa.getPiece().toString() + "";
 			for(int z = 0; z < dpa.getAttributes().size(); z++) {
-				result +=  dpa.getPiece().toString() + y + dpa.getAttributes().get(z) + " symbolic ";
+				result +=  (dpa.getPiece().toString() + dpa.getAttributes().get(z)).toLowerCase() + this.convertDigitToAlpha(y) + " symbolic ";
 			}
 		}
 		return result;
@@ -190,6 +234,8 @@ public class DataProcessor {
 						}
 						doOther = true;
 					}
+					if(debug) System.out.println("Number of pieces to search: " + black.size());
+					if(debug) System.out.println("Number of piece data sets in DataAtom: " + datum.getPieceAttributesSet().size());
 				}
 				
 				data.add(datum);

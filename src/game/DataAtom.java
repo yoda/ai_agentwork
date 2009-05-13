@@ -40,13 +40,53 @@ public class DataAtom implements Serializable {
 		return this.move;
 	}
 	
+	private String convertDigitToAlpha(int x) {
+		String initial = "" + x;
+		String result = "";
+		for(int y = 0; y < initial.length(); y++) {
+			switch(Character.getNumericValue(initial.charAt(y))) {
+				case 0 :
+					result += "a";
+					break;
+				case 1 :
+					result += "b";
+					break;
+				case 2 :
+					result += "c";
+					break;
+				case 3 :
+					result += "d";
+					break;
+				case 4 :
+					result += "e";
+					break;
+				case 5 :
+					result += "f";
+					break;
+				case 6 :
+					result += "g";
+					break;
+				case 7 :
+					result += "h";
+					break;
+				case 8 :
+					result += "i";
+					break;
+				case 9 :
+					result += "j";
+					break;
+			}	
+		}
+		return result;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
 		String result = "";
-		result += this.getKey();
+		result += this.convertDigitToAlpha(this.getKey());
 		for(int y = 0; y < this.getPieceAttributesSet().size(); y++) {
 			DataPieceAttributes dpa = this.getPieceAttributesSet().get(y);
 			//result += " " + dpa.getPiece().toString() + "";
@@ -54,7 +94,21 @@ public class DataAtom implements Serializable {
 				result += " " + dpa.getResults().get(z) + "";
 			}
 		}
-		result += " " + this.removeSpaces(this.getMove().toString()) + "";
+		result += " " + this.fixMove(this.removeSpaces(this.getMove().toString())) + "";
+		return result;
+	}
+	
+	private String fixMove(String s) {
+		String result = "";
+		for(int x = 0; x < s.length(); x++) {
+			if(Character.isDigit(s.charAt(x))) {
+				result += this.convertDigitToAlpha(s.charAt(x));
+			} else if(s.charAt(x) == '>' || s.charAt(x) == '-') {
+				result += 'z';
+			} else {
+				result += s.charAt(x);
+			}
+		}
 		return result;
 	}
 	

@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class ZooTest {
 
-    final static String dbFileName = "testfiledir.0.results.25";
+    final static String dbFileName = "testfiledir.0.results.32";
     final static String jadtiURL = "http://www.run.montefiore.ulg.ac.be/" +
 	"~francois/software/jaDTi/";
     
@@ -41,7 +41,7 @@ public class ZooTest {
 //	testAttributesVector.add(attributeSet.findByName("domestic"));
 //	testAttributesVector.add(attributeSet.findByName("hair"));
 //	testAttributesVector.add(attributeSet.findByName("feathers"));
-	
+	/*
 	testAttributesVector.add(attributeSet.findByName("e0canBeTaken"));
 	testAttributesVector.add(attributeSet.findByName("e0canMove"));
 	testAttributesVector.add(attributeSet.findByName("e0canTake")); 
@@ -65,7 +65,8 @@ public class ZooTest {
 	testAttributesVector.add(attributeSet.findByName("p5canBeTaken")); 
 	testAttributesVector.add(attributeSet.findByName("p5canMove")); 
 	testAttributesVector.add(attributeSet.findByName("p5canTake")); 
-	testAttributesVector.add(attributeSet.findByName("p5takeKing")); 
+	testAttributesVector.add(attributeSet.findByName("p5takeKing"));
+	 
 	testAttributesVector.add(attributeSet.findByName("w6canBeTaken")); 
 	testAttributesVector.add(attributeSet.findByName("w6canMove")); 
 	testAttributesVector.add(attributeSet.findByName("w6canTake")); 
@@ -77,7 +78,8 @@ public class ZooTest {
 	testAttributesVector.add(attributeSet.findByName("q8canBeTaken")); 
 	testAttributesVector.add(attributeSet.findByName("q8canMove")); 
 	testAttributesVector.add(attributeSet.findByName("q8canTake")); 
-	testAttributesVector.add(attributeSet.findByName("q8takeKing")); 
+	testAttributesVector.add(attributeSet.findByName("q8takeKing"));
+	 
 	testAttributesVector.add(attributeSet.findByName("k9canBeTaken")); 
 	testAttributesVector.add(attributeSet.findByName("k9canMove")); 
 	testAttributesVector.add(attributeSet.findByName("k9canTake")); 
@@ -85,11 +87,13 @@ public class ZooTest {
 	testAttributesVector.add(attributeSet.findByName("n10canBeTaken")); 
 	testAttributesVector.add(attributeSet.findByName("n10canMove")); 
 	testAttributesVector.add(attributeSet.findByName("n10canTake")); 
-	testAttributesVector.add(attributeSet.findByName("n10takeKing")); 
-	testAttributesVector.add(attributeSet.findByName("w11canBeTaken")); 
-	testAttributesVector.add(attributeSet.findByName("w11canMove")); 
-	testAttributesVector.add(attributeSet.findByName("w11canTake")); 
-	testAttributesVector.add(attributeSet.findByName("w11takeKing"));
+	testAttributesVector.add(attributeSet.findByName("n10takeKing"));
+	*/ 
+	testAttributesVector.add(attributeSet.findByName("wcanbetakenbb")); 
+	testAttributesVector.add(attributeSet.findByName("wcanmovebb")); 
+	testAttributesVector.add(attributeSet.findByName("wcantakebb"));
+	
+	testAttributesVector.add(attributeSet.findByName("wtakekingbb"));
 	
 	AttributeSet testAttributes = new AttributeSet(testAttributesVector);
 	SymbolicAttribute goalAttribute =
