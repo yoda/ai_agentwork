@@ -20,9 +20,9 @@ public class Play {
   
   public static void main(String[] args) {
 
-    Player red = new EricMiniMax(true);
+    Player red = new Arnie(true);
 //    Player red = new Hal(true);
-    Player black = new Marvin(false);
+    Player black = new EricMiniMax(false);
     
     int redwins = 0;
     int blackwins = 0;

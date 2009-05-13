@@ -262,17 +262,17 @@ public class DataProcessor {
 			return;
 		}
 		*/
-		String dirname = "testfiledir.0";
-		String dirname1 = "testfiledir.1";
-		String dirname2 = "testfiledir.2";
-		String dirname3 = "testfiledir.3";
-		String dirname4 = "testfiledir.4";
+		String dirname = "testfiledir.7";
+	//	String dirname1 = "testfiledir.1";
+	//	String dirname2 = "testfiledir.2";
+	//	String dirname3 = "testfiledir.3";
+	//	String dirname4 = "testfiledir.4";
 		ArrayList<String> directories = new ArrayList<String>();
 		directories.add(dirname);
-		directories.add(dirname1);
-		directories.add(dirname2);
-		directories.add(dirname3);
-		directories.add(dirname4);
+//		directories.add(dirname1);
+//		directories.add(dirname2);
+//		directories.add(dirname3);
+//		directories.add(dirname4);
 		System.out.println("Running the Data Processor over '" + dirname + "'.");
 		DataProcessor d = new DataProcessor(directories);
 		ArrayList<DataAtom> temp = d.scanData();

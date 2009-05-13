@@ -1,5 +1,3 @@
-/* jaDTi package - v0.6.0 */
-
 package game;
 
 import be.ac.ulg.montefiore.run.jadti.*;
@@ -8,39 +6,35 @@ import java.io.*;
 import java.util.*;
 
 
-/*
- * A short example program of the jaDTi library.
- */
-public class ZooTest {
 
-    final static String dbFileName = "testfiledir.0.results.34";
-    final static String jadtiURL = "http://www.run.montefiore.ulg.ac.be/" +
-	"~francois/software/jaDTi/";
+public class DataDTreeGenerator {
+
+	
+	private String dataFileName;
+	private String filename;
+	private boolean debug = false;
+	
+    public DataDTreeGenerator(String datainput, String filename) {
+    	this.dataFileName = datainput;
+    	this.filename = filename;
+    }
+	
+	
     
     
-    static public void main(String[] args)
-	throws IOException {
+    public boolean generateTree() throws IOException {
 	
 	ItemSet learningSet = null;
 	try {
-	    learningSet = ItemSetReader.read(new FileReader(dbFileName));
+	    learningSet = ItemSetReader.read(new FileReader(this.dataFileName));
 	}
 	catch(FileNotFoundException e) {
-	    System.err.println("File not found : " + dbFileName + ".");
-	    System.err.println("This file is included in the source " +
-			       "distribution of jaDti.  You can find it at " +
-			       jadtiURL);
-	    System.exit(-1);
+	    return false;
 	}
 	
 	AttributeSet attributeSet = learningSet.attributeSet();
 	
 	Vector testAttributesVector = new Vector();
-//	testAttributesVector.add(attributeSet.findByName("legs"));
-//	testAttributesVector.add(attributeSet.findByName("tail"));
-//	testAttributesVector.add(attributeSet.findByName("domestic"));
-//	testAttributesVector.add(attributeSet.findByName("hair"));
-//	testAttributesVector.add(attributeSet.findByName("feathers"));
 	
 	testAttributesVector.add(attributeSet.findByName("ecanbetakena"));
 	testAttributesVector.add(attributeSet.findByName("ecanmovea"));
@@ -102,9 +96,61 @@ public class ZooTest {
 	DecisionTree tree = buildTree(learningSet, testAttributes,
 				      goalAttribute);
 	
-	printDot(tree);
+	// About to turn tree into dot for printing beauty.
+	Vector newtestAttributesVector = new Vector();
+	Iterator<Attribute> it = tree.getAttributeSet().attributes().iterator();
+	while(it.hasNext()) {
+		Attribute old = it.next();
+		char[] temp = old.name().toCharArray();
+		temp[0] = Character.toUpperCase(temp[0]);
+		newtestAttributesVector.add(new String(temp));
+	}
 	
-	printGuess(learningSet.item(0), tree);
+	Iterator<Attribute> at = newtestAttributesVector.iterator();
+	while(at.hasNext()) {
+		System.out.println(at.next());
+	}
+	
+	DecisionTreeToDot dot = new DecisionTreeToDot(tree);
+	
+	String dotString = dot.produce();
+	
+	File file;
+	int x = 0;
+	do {
+		file = new File(filename + "." + x);
+		x++;
+	} while(file.exists());
+	try {
+		file.createNewFile();
+		file.setWritable(true, true);
+	} catch (IOException e) {
+		e.printStackTrace();
+		if(debug) System.out.println("Unable to create file!");
+	}
+	FileOutputStream fos;
+	PrintStream pos;
+	if(file.canWrite()) {
+		try {
+			fos = new FileOutputStream(file, true);
+			pos = new PrintStream(fos);
+			pos.println(dotString);
+		} catch (FileNotFoundException e) {
+			if(debug) System.out.println("Failed creating FileOutputStream!");
+			if(debug) e.printStackTrace();
+			return false;
+		}
+		pos.close();
+		try {
+			fos.close();
+		} catch (IOException e) {
+			if(debug) System.out.println("Unable to close FileOutputStream!");
+			if(debug) e.printStackTrace();
+		}
+		return true;
+	} 
+	return false;
+	
     }
 
     
