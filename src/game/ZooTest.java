@@ -92,7 +92,7 @@ public class ZooTest {
 	testAttributesVector.add(attributeSet.findByName("wcanbetakenbb")); 
 	testAttributesVector.add(attributeSet.findByName("wcanmovebb")); 
 	testAttributesVector.add(attributeSet.findByName("wcantakebb"));
-	
+	//
 	testAttributesVector.add(attributeSet.findByName("wtakekingbb"));
 	
 	AttributeSet testAttributes = new AttributeSet(testAttributesVector);
