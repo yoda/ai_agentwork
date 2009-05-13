@@ -90,6 +90,7 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
 	}
+	
 
 	@Override
 	public Action getAction(Percept cP) {

@@ -1,6 +1,15 @@
 package search;
 import agent.*;
+import be.ac.ulg.montefiore.run.jadti.DecisionTree;
+import be.ac.ulg.montefiore.run.jadti.ItemSet;
+
+import game.DataPieceAttributes;
+
 import java.util.*;
+
+import mixmeta4.Board;
+import mixmeta4.Move;
+import mixmeta4.Piece;
 
 /**
  * This file contains a template for getting started writing a minimax 
@@ -21,10 +30,17 @@ public class Minimax {
 
   NodeInfo nodeInfo;
   ArrayList<Node> visited;
+  private DecisionTree tree;
 
   public Minimax (NodeInfo nodeInfo) {
     this.nodeInfo = nodeInfo;
     visited = new ArrayList<Node>();
+  }
+  
+  public Minimax (NodeInfo nodeInfo, DecisionTree tree) {
+	    this.nodeInfo = nodeInfo;
+	    visited = new ArrayList<Node>();
+	    this.tree = tree;
   }
   
   /**
@@ -142,6 +158,84 @@ public class Minimax {
     }
 
 
+  }
+  
+  private boolean decideOnMove(Move move, Board board) {
+	  Board newBoard = (Board)board.clone();
+	  
+	  newBoard.update(move);
+	  ItemSet testSet = new ItemSet(this.tree.getAttributeSet());
+	  ListIterator<Piece> defaultset = black.listIterator();
+		boolean doOther = true;
+		if(pieces.hasNext()) {
+			Piece piece = pieces.next();
+			if(debug) System.out.println("Fill the data for each of the pieces loop");
+			while(defaultset.hasNext()) {
+				DataPieceAttributes dpa = new DataPieceAttributes();
+
+				Piece defaultPiece = defaultset.next();
+
+				if(piece.toString().compareTo(defaultPiece.toString()) != 0) {
+					dpa.setPiece(defaultPiece);
+
+					dpa.addAttribute("canBeTaken");
+					dpa.addResult(false);
+
+					dpa.addAttribute("canMove");
+					dpa.addResult(false);
+
+					dpa.addAttribute("canTake");
+					dpa.addResult(false);
+
+					dpa.addAttribute("takeKing");
+					dpa.addResult(false);
+					datum.addPieceAttributes(dpa);
+					if(pieces.hasNext()) {
+						piece = pieces.next();
+					}
+					//defaultPiece = defaultset.next();
+					doOther = false;
+
+				}
+				if(doOther) {
+					dpa.setPiece(piece);
+
+					dpa.addAttribute("canBeTaken");
+					dpa.addResult(atts.canBeTaken(board.getTheBoard(), piece));
+
+					dpa.addAttribute("canMove");
+					dpa.addResult(atts.canMove(board.getTheBoard(), piece));
+
+					dpa.addAttribute("canTake");
+					dpa.addResult(atts.canTake(board.getTheBoard(), piece));
+
+					dpa.addAttribute("takeKing");
+					dpa.addResult(atts.takeKing(board.getTheBoard()));
+					datum.addPieceAttributes(dpa);
+					if(pieces.hasNext()) {
+						piece = pieces.next();
+					}
+					//defaultPiece = defaultset.next();
+					
+				}
+				doOther = true;
+			}
+			if(debug) System.out.println("Number of pieces to search: " + black.size());
+			if(debug) System.out.println("Number of piece data sets in DataAtom: " + datum.getPieceAttributesSet().size());
+		}
+		
+		data.add(datum);
+		
+
+	}
+
+	  testSet.add(arg0)
+	  
+	  
+	  
+	  
+	  
+	  
   }
 
 }
