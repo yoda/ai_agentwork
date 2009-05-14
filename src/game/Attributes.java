@@ -1,23 +1,21 @@
-package game;
+package player;
 import java.awt.Point;
 import java.util.ListIterator;
 import java.util.ArrayList;
 import mixmeta4.*;
 
 public class Attributes {
-	
-	static final int canmove = 1;
-	static final int cantake =2;
-	static final int canbetaken = 3;
-	static final int takeKing = 4;
-	static final int kingOnThread = 5;
-	
-	//a helper method to find the location of the king
-	//@return a Square, because a square can get both location and piece
-	private Square findKing (Board board, boolean isRed) {
-		PieceSet ps;
-		Piece currentPiece;
-		if (isRed) {
+
+	// New	
+	// a helper method to find the location of the king
+	// todo: change to binary search
+	// @return a Square, because a square can get both location and piece
+	private Square findKing (Board board, Boolean isRed) {
+		PieceSet ps = null;
+		Piece currentPiece = null;
+		
+		// Get the right side
+		if (board.isRed) {
 			ps = board.getRedPieces();
 		} else {
 			ps = board.getBlackPieces();
@@ -113,24 +111,5 @@ public class Attributes {
 			}
 		}
 		return false;
-	}
-	//@attribute -  means use which function will be used from above
-	public boolean[] getAll (Board board, PieceSet ps, int attribute) {
-		boolean result[] = new boolean[12];
-		Piece currentPiece;
-		ListIterator ls = ps.listIterator();
-		int i = 0;
-		while (ls.hasNext()) {
-			currentPiece = (Piece) ls.next();
-			if (attribute == 1) {
-				result[i] = canMove(board, currentPiece);
-			} else if (attribute ==2) {
-				result[i] = canTake(board, currentPiece);
-			} else if (attribute ==3) {
-				result[i] = canBeTaken(board, currentPiece);
-			}
-			i++;
-		}
-		return result;
 	}
 }
