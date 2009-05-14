@@ -267,7 +267,7 @@ public class MiniMaxDecision {
 	  KnownSymbolicValue guessedGoalAttributeValue = 
 		    tree.guessGoalAttribute(item);
 if(debug) System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));	  
-	  if(board.getSquare(move.getOrigin()).look().toString().toLowerCase().compareTo(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue)) == 0) {
+	  if(board.getSquare(move.getOrigin()).look().toString().toLowerCase().compareTo(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue).toLowerCase()) == 0) {
 		  return true;
 	  }
 	  return false;

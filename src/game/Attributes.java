@@ -44,10 +44,14 @@ public class Attributes {
 		ListIterator ls = move.listIterator();
 		//!board.redToMove because want to get opponent's king and it's my turn to move
 		Square kingLocation = findKing (board, !this.isRed);
+		if(kingLocation == null) {
+			return false;
+		}
 		//get all my moves' destinations
 		while (ls.hasNext()) {
 			currentMove = (Move) ls.next();
-			if (currentMove.getDestination().distance(kingLocation.getLocation()) == 0) {
+			if(currentMove.getDestination() == null) continue;
+			if (currentMove.getDestination().equals(kingLocation.getLocation())) {
 				return true;
 			}
 		}
