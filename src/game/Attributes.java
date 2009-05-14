@@ -34,6 +34,7 @@ public class Attributes {
 		return currentPiece;
 	}
 	
+	// @return true if King for this side can be taken
 	public boolean takeKing (Board board) {
 		Moves move = (Moves) board.getActions();
 		Move currentMove = null;
