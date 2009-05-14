@@ -114,7 +114,7 @@ public class DataProcessor {
 			//result += " " + dpa.getPiece().toString() + "";
 			for(int z = 0; z < dpa.getAttributes().size(); ++z) {
 				result.append(dpa.getPiece().toString());
-				result.append(dpa.getAttributes().get(z)).toLowerCase());
+				result.append(dpa.getAttributes().get(z).toLowerCase());
 				result.append(this.convertDigitToAlpha(y));
 				result.append(" symbolic ");
 			}

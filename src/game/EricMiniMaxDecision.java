@@ -96,7 +96,7 @@ public class EricMiniMaxDecision extends Player implements agent.Agent, Serializ
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
-		DataDTreeGenerator gen = new DataDTreeGenerator("gamedata.5", "");
+		DataDTreeGenerator gen = new DataDTreeGenerator("gamedata.7", "");
 		try {
 			this.tree = gen.getDTree();
 		} catch (FileNotFoundException e) {

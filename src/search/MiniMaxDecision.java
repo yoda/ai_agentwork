@@ -147,7 +147,10 @@ public class MiniMaxDecision {
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
-    	  this.decideOnMove((Move)arc, (Board)child.getState());
+    	  
+    	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
+    		  break;
+    	  }
     	  child.update(arc);
     	  
     	//  if(!nodeExists(child)) {
@@ -258,12 +261,11 @@ public class MiniMaxDecision {
 		    (KnownSymbolicValue) item.valueOf(itemAttributes, goalAttribute);
 	  KnownSymbolicValue guessedGoalAttributeValue = 
 		    tree.guessGoalAttribute(item);
-	  
-//	  data.add(datum);
-	  
-	  System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));
-	  return true;
-
+if(debug) System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));	  
+	  if(board.getSquare(move.getOrigin()).look().toString().toLowerCase().compareTo(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue)) == 0) {
+		  return true;
+	  }
+	  return false;
   }
 
 //  testSet.add(arg0)
