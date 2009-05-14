@@ -111,7 +111,7 @@ public class MiniMaxDecision {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
     	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
-    		  break;
+    		  continue;
     	  }
     	  
     	  child.update(arc);
@@ -153,7 +153,7 @@ public class MiniMaxDecision {
     	  arc = (Action)li.next();
     	  
     	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
-    		  break;
+    		  continue;
     	  }
     	  child.update(arc);
     	  
@@ -266,7 +266,9 @@ public class MiniMaxDecision {
 		    (KnownSymbolicValue) item.valueOf(itemAttributes, goalAttribute);
 	  KnownSymbolicValue guessedGoalAttributeValue = 
 		    tree.guessGoalAttribute(item);
-if(debug) System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));	  
+if(debug) System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));
+if(debug) System.out.println("Piece on board to compare: " + board.getSquare(move.getOrigin()).look().toString().toLowerCase());
+if(debug) System.out.println("Piece guess for situation: " + tree.getGoalAttribute().valueToString(guessedGoalAttributeValue).toLowerCase());
 	  if(board.getSquare(move.getOrigin()).look().toString().toLowerCase().compareTo(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue).toLowerCase()) == 0) {
 		  return true;
 	  }

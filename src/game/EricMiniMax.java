@@ -85,7 +85,7 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		writer = new DataWriter(filename, filename + "dir");
 		this.nodeInfo = new CheXNodeInfo(isRed, 2);
 		this.random = new Random();
-		ratio = 0.5; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
+		ratio = 0.1; // There is a 100 % 30 chance that the agent might not (50%) pick the optimum move, instead second (if it exists).
 		System.out.println();
 		if(this.isRed) System.out.println(this.name + " is red");
 		if(!this.isRed) System.out.println(this.name + "is blue");
@@ -100,14 +100,14 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		 System.out.println("Red time: " + board.game.getRedTime());
 		 if(!nodeInfo.isRed) {
 			 if(board.game.getBlackTime() > 66000) {
-				 //this.nodeInfo.setDepthLimit(4);
+				 this.nodeInfo.setDepthLimit(4);
 			 } else {
 				 this.nodeInfo.setDepthLimit(2);
 			 }
 				 
 		 } else {
 			 if(board.game.getRedTime() > 66000) {
-				 //this.nodeInfo.setDepthLimit(4);
+				 this.nodeInfo.setDepthLimit(4);
 			 } else {
 				 this.nodeInfo.setDepthLimit(2);
 			 }
@@ -150,9 +150,9 @@ public class EricMiniMax extends Player implements agent.Agent, Serializable {
 		 // Find the move with the highest Utility.
 		 Collections.sort(bestMoveValuePairs);
 		 int index = 0;
-		 if(random.nextInt((int)(100 * ratio)) == 0 && bestMoveValuePairs.size() > 1) {
+		 if(random.nextInt((int)(100 * ratio)) == 0 && bestMoveValuePairs.size() > 4) {
 			 System.out.println("Might be random here...");
-			 index = random.nextInt(2);
+			 index = random.nextInt(4);
 		 }
 		 
 		 bestMove = bestMoveValuePairs.get(index).getMove();
