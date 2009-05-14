@@ -105,15 +105,20 @@ public class DataProcessor {
 	}
 	
 	private String attributeString(DataAtom lineone) {
-		String result = "";
-		for(int y = 0; y < lineone.getPieceAttributesSet().size(); y++) {
-			DataPieceAttributes dpa = lineone.getPieceAttributesSet().get(y);
+		StringBuilder result = new StringBuilder();
+		DataPieceAttributes dpa = null;
+		
+		for(int y = 0; y < lineone.getPieceAttributesSet().size(); ++y) {
+			dpa = lineone.getPieceAttributesSet().get(y);
 			//result += " " + dpa.getPiece().toString() + "";
-			for(int z = 0; z < dpa.getAttributes().size(); z++) {
-				result +=  (dpa.getPiece().toString() + dpa.getAttributes().get(z)).toLowerCase() + this.convertDigitToAlpha(y) + " symbolic ";
+			for(int z = 0; z < dpa.getAttributes().size(); ++z) {
+				result.append(dpa.getPiece().toString());
+				result.append(dpa.getAttributes().get(z)).toLowerCase());
+				result.append(this.convertDigitToAlpha(y));
+				result.append(" symbolic ");
 			}
 		}
-		return result;
+		return result.toString();
 	}
 	
 	private void scanOneDirectory(String directoryname) {
