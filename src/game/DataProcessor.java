@@ -34,12 +34,11 @@ public class DataProcessor {
 	}
 	
 	public ArrayList<DataAtom> scanData() {
-		for(int x = 0; x < this.directories.size(); x++) {
+		for(int x = 0; x < this.directories.size(); ++x) {
 			this.scanOneDirectory(this.directories.get(x));
 		}
 		this.writeable = true;
 		return this.data;
-		
 	}
 	
 	public boolean writeData(String filename) {
@@ -97,43 +96,12 @@ public class DataProcessor {
 	}
 	
 	private String convertDigitToAlpha(int x) {
-		String initial = "" + x;
-		String result = "";
-		for(int y = 0; y < initial.length(); y++) {
-			switch(Character.getNumericValue(initial.charAt(y))) {
-				case 0 :
-					result += "a";
-					break;
-				case 1 :
-					result += "b";
-					break;
-				case 2 :
-					result += "c";
-					break;
-				case 3 :
-					result += "d";
-					break;
-				case 4 :
-					result += "e";
-					break;
-				case 5 :
-					result += "f";
-					break;
-				case 6 :
-					result += "g";
-					break;
-				case 7 :
-					result += "h";
-					break;
-				case 8 :
-					result += "i";
-					break;
-				case 9 :
-					result += "j";
-					break;
-			}	
+	    String initial = "" + x;
+		StringBuilder s = new StringBuilder();
+		for(int y = 0; y < initial.length(); ++y) {
+			s.append((char)(Character.getNumericValue(initial.charAt(y)) + (int)'a'));
 		}
-		return result;
+		return s.toString();
 	}
 	
 	private String attributeString(DataAtom lineone) {
@@ -152,32 +120,30 @@ public class DataProcessor {
 		DataReader reader = new DataReader(directoryname);
 		ArrayList<DataContainer> boards = reader.readData();
 		PieceSet black = boards.get(0).getTheBoard().getBlackPieces();
-		if(debug) System.out.println("Number of blackPieces: " + black.size());
+if(debug) System.out.println("Number of blackPieces: " + black.size());
 		PieceSet white = boards.get(0).getTheBoard().getRedPieces();
-		if(debug) System.out.println("Number of whitePieces: " + white.size());
-		
-		if(debug) System.out.println("Initialising the board iterator");
+if(debug) System.out.println("Number of whitePieces: " + white.size());	
+if(debug) System.out.println("Initialising the board iterator");
 		ListIterator<DataContainer> it = boards.listIterator();
 		int x = 0;
 		DataContainer board = it.next();
-		
 			
 		while(it.hasNext()) {
-			if(debug) System.out.println("Cycle x = " + x);
+if(debug) System.out.println("Cycle x = " + x);
 			Moves theMoves = board.getTheMoves();
 			Move moi = null;
-			if(debug) System.out.println("Get the previous move...");
-			if(debug) System.out.println("theMoves size: " + theMoves.size());
+if(debug) System.out.println("Get the previous move...");
+if(debug) System.out.println("theMoves size: " + theMoves.size());
 			if(theMoves.size() > 1) {
 				moi = (Move)theMoves.get(theMoves.size() - 1);
 			}
-			if(debug) System.out.println("Current Move of interest: " + moi);
-			if(debug) System.out.println("Conditional entering data population loop");
+if(debug) System.out.println("Current Move of interest: " + moi);
+if(debug) System.out.println("Conditional entering data population loop");
 			if(moi != null && board.getTheBoard().getSquare(moi.getDestination().getLocation()).isOccupiedByBlack()) {
 				DataAtom datum = new DataAtom();
 				datum.setKey(x);
 				datum.setMove(moi);
-				if(debug) System.out.println("Initialising both of the Piece iterators");
+if(debug) System.out.println("Initialising both of the Piece iterators");
 				ListIterator<Piece> pieces = board.getTheBoard().getBlackPieces().listIterator();
 				ListIterator<Piece> defaultset = black.listIterator();
 				boolean doOther = true;
