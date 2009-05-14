@@ -92,12 +92,15 @@ public class Minimax {
     ListIterator li;
     Action arc;
     Node child;
+    
     double childValue;
     if (nodeInfo.isTerminal(visit)) {
     	return nodeInfo.utility(visit);
     }
     else {
-      li = visit.getState().getActions().listIterator();
+    	Actions tempa = visit.getState().getActions(); 
+      li = tempa.listIterator();
+      System.out.println(tempa.size() + "," + visit.getPath().size());
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
@@ -134,7 +137,9 @@ public class Minimax {
     	return nodeInfo.utility(visit);
     }
     else {
-      li = visit.getState().getActions().listIterator();
+    	Actions tempa = visit.getState().getActions(); 
+        li = tempa.listIterator();
+        System.out.println(tempa.size() + "," + visit.getPath().size());
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();

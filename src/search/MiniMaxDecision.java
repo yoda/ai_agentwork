@@ -40,7 +40,7 @@ public class MiniMaxDecision {
   private DecisionTree tree;
   private PieceSet black;
   private PieceSet white;
-  private boolean debug = true;
+  private boolean debug = false;
   
    
   public MiniMaxDecision (NodeInfo nodeInfo, DecisionTree tree, PieceSet black, PieceSet white) {
@@ -106,6 +106,7 @@ public class MiniMaxDecision {
     	return nodeInfo.utility(visit);
     }
     else {
+    	int x = 0;
       li = visit.getState().getActions().listIterator();
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
@@ -113,7 +114,7 @@ public class MiniMaxDecision {
     	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
     		  continue;
     	  }
-    	  
+    	  x++;
     	  child.update(arc);
     	 
    // 	  if(!nodeExists(child)) {
@@ -122,6 +123,7 @@ public class MiniMaxDecision {
     //		  Collections.sort(this.visited);
     		  alpha = Math.max(alpha, minValue(child, alpha, beta));
     		  if(alpha >= beta) {
+    			  System.out.println(x + "," + visit.getPath().size());
     			  return beta;
     		  }
 	//		  childValue = alpha;
@@ -130,6 +132,7 @@ public class MiniMaxDecision {
 	//		  }
     //	  }
       }
+      System.out.println(x + "," + visit.getPath().size());
       return alpha;
     }
   }
@@ -147,6 +150,7 @@ public class MiniMaxDecision {
     	return nodeInfo.utility(visit);
     }
     else {
+    	int x = 0;
       li = visit.getState().getActions().listIterator();
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
@@ -155,6 +159,7 @@ public class MiniMaxDecision {
     	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
     		  continue;
     	  }
+    	  x++;
     	  child.update(arc);
     	  
     	//  if(!nodeExists(child)) {
@@ -163,6 +168,7 @@ public class MiniMaxDecision {
     	//	  Collections.sort(this.visited);
     		  beta = Math.min(beta, maxValue(child, alpha, beta));
     		  if(beta <= alpha) {
+    			  System.out.println(x + "," + visit.getPath().size());
     			  return alpha;
     		  }
 	//		  childValue = beta;
@@ -171,6 +177,7 @@ public class MiniMaxDecision {
 	    //	  }
     	//  }
       }
+      System.out.println(x + "," + visit.getPath().size());
       return beta;
     }
 
