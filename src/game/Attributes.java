@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import mixmeta4.*;
 
 public class Attributes {
+	
+	private boolean isRed;
+	
+	public Attributes(boolean isRed)
+	{
+		this.isRed = isRed;
+	}
 
 	// New	
 	// a helper method to find the location of the king
@@ -36,7 +43,7 @@ public class Attributes {
 		Move currentMove;
 		ListIterator ls = move.listIterator();
 		//!board.redToMove because want to get opponent's king and it's my turn to move
-		Square kingLocation = findKing (board, !board.redToMove);
+		Square kingLocation = findKing (board, this.isRed);
 		//get all my moves' destinations
 		while (ls.hasNext()) {
 			currentMove = (Move) ls.next();
@@ -51,7 +58,6 @@ public class Attributes {
 	public boolean kingOnThread (Board board) {
 		Square sq = findKing(board, board.redToMove);
 		return canBeTaken(board, sq.look());
-		
 	}
 	
 	public boolean canMove (Board board, Piece which) {
