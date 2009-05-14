@@ -20,7 +20,87 @@ public class DataDTreeGenerator {
     }
 	
 	
-    
+    public DecisionTree getDTree() throws FileNotFoundException {
+    	ItemSet learningSet = null;
+    	try {
+    	    learningSet = ItemSetReader.read(new FileReader(this.dataFileName));
+    	}
+    	catch(FileNotFoundException e) {
+    		System.err.println("File not found!");
+    	    System.exit(1);
+    	} catch (FileFormatException e) {
+    		System.err.println("File format error!");
+    		System.exit(1);
+		} catch (IOException e) {
+			System.err.println("IO error!");
+			System.exit(1);
+		}
+    	
+    	AttributeSet attributeSet = learningSet.attributeSet();
+    	
+    	Vector testAttributesVector = new Vector();
+    	
+    	testAttributesVector.add(attributeSet.findByName("ecanbetakena"));
+    	testAttributesVector.add(attributeSet.findByName("ecanmovea"));
+    	testAttributesVector.add(attributeSet.findByName("ecantakea")); 
+    	testAttributesVector.add(attributeSet.findByName("etakekinga")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanbetakenb")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanmoveb")); 
+    	testAttributesVector.add(attributeSet.findByName("pcantakeb")); 
+    	testAttributesVector.add(attributeSet.findByName("ptakekingb")); 
+    	testAttributesVector.add(attributeSet.findByName("ecanbetakenc")); 
+    	testAttributesVector.add(attributeSet.findByName("ecanmovec")); 
+    	testAttributesVector.add(attributeSet.findByName("ecantakec")); 
+    	testAttributesVector.add(attributeSet.findByName("etakekingc")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanbetakend")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanmoved")); 
+    	testAttributesVector.add(attributeSet.findByName("pcantaked")); 
+    	testAttributesVector.add(attributeSet.findByName("ptakekingd")); 
+    	testAttributesVector.add(attributeSet.findByName("ecanbetakene")); 
+    	testAttributesVector.add(attributeSet.findByName("ecanmovee")); 
+    	testAttributesVector.add(attributeSet.findByName("ecantakee")); 
+    	testAttributesVector.add(attributeSet.findByName("etakekinge")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanbetakenf")); 
+    	testAttributesVector.add(attributeSet.findByName("pcanmovef")); 
+    	testAttributesVector.add(attributeSet.findByName("pcantakef")); 
+    	testAttributesVector.add(attributeSet.findByName("ptakekingf"));
+    	 
+    	testAttributesVector.add(attributeSet.findByName("wcanbetakeng")); 
+    	testAttributesVector.add(attributeSet.findByName("wcanmoveg")); 
+    	testAttributesVector.add(attributeSet.findByName("wcantakeg")); 
+    	testAttributesVector.add(attributeSet.findByName("wtakekingg")); 
+    	testAttributesVector.add(attributeSet.findByName("ncanbetakenh")); 
+    	testAttributesVector.add(attributeSet.findByName("ncanmoveh")); 
+    	testAttributesVector.add(attributeSet.findByName("ncantakeh")); 
+    	testAttributesVector.add(attributeSet.findByName("ntakekingh")); 
+    	testAttributesVector.add(attributeSet.findByName("qcanbetakeni")); 
+    	testAttributesVector.add(attributeSet.findByName("qcanmovei")); 
+    	testAttributesVector.add(attributeSet.findByName("qcantakei")); 
+    	testAttributesVector.add(attributeSet.findByName("qtakekingi"));
+    	 
+    	testAttributesVector.add(attributeSet.findByName("kcanbetakenj")); 
+    	testAttributesVector.add(attributeSet.findByName("kcanmovej")); 
+    	testAttributesVector.add(attributeSet.findByName("kcantakej")); 
+    	testAttributesVector.add(attributeSet.findByName("ktakekingj")); 
+    	testAttributesVector.add(attributeSet.findByName("ncanbetakenba")); 
+    	testAttributesVector.add(attributeSet.findByName("ncanmoveba")); 
+    	testAttributesVector.add(attributeSet.findByName("ncantakeba")); 
+    	testAttributesVector.add(attributeSet.findByName("ntakekingba"));
+    	 
+    	testAttributesVector.add(attributeSet.findByName("wcanbetakenbb")); 
+    	testAttributesVector.add(attributeSet.findByName("wcanmovebb")); 
+    	testAttributesVector.add(attributeSet.findByName("wcantakebb"));
+    	//
+    	testAttributesVector.add(attributeSet.findByName("wtakekingbb"));
+    	
+    	AttributeSet testAttributes = new AttributeSet(testAttributesVector);
+    	SymbolicAttribute goalAttribute =
+    	    (SymbolicAttribute) learningSet.attributeSet().findByName("type");
+
+    	DecisionTree tree = buildTree(learningSet, testAttributes,
+    				      goalAttribute);
+    	return tree;
+    }
     
     public boolean generateTree() throws IOException {
 	
@@ -179,7 +259,7 @@ public class DataDTreeGenerator {
     /*
      * Prints an item's guessed goal attribute value.
      */
-    static private void printGuess(Item item, DecisionTree tree) {
+    public String printGuess(Item item, DecisionTree tree) {
 	AttributeSet itemAttributes = tree.getAttributeSet();
 	SymbolicAttribute goalAttribute = tree.getGoalAttribute();
 	
@@ -188,12 +268,8 @@ public class DataDTreeGenerator {
 	KnownSymbolicValue guessedGoalAttributeValue = 
 	    tree.guessGoalAttribute(item);
 
-	String s = "Item goal attribute value is " +
-	    goalAttribute.valueToString(goalAttributeValue) + "\n";
+	String s = tree.getGoalAttribute().valueToString(guessedGoalAttributeValue);
 	
-	s += "The value guessed by the tree is " + 
-	    tree.getGoalAttribute().valueToString(guessedGoalAttributeValue);
-	
-	System.out.println(s);
+	return s;
     }
 }

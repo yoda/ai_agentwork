@@ -1,10 +1,11 @@
 Game:	CheX, 60, 6, gui
-Red:	game.EricMiniMax
+Red:	game.EricMiniMaxDecision
 Blue:	samplePlayers.Marvin
 Player: game.EricNSRD
 Player: game.EricNSRM
 Player: game.EricNSRT
 Player: game.EricSUA
+Player: game.EricMiniMax
 Player: samplePlayers.Arnie
 Player: game.EricSRA
 Player: samplePlayers.Hal

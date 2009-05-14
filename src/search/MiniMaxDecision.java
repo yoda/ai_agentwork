@@ -1,8 +1,14 @@
 package search;
 import agent.*;
+import be.ac.ulg.montefiore.run.jadti.AttributeSet;
+import be.ac.ulg.montefiore.run.jadti.AttributeValue;
 import be.ac.ulg.montefiore.run.jadti.DecisionTree;
+import be.ac.ulg.montefiore.run.jadti.Item;
 import be.ac.ulg.montefiore.run.jadti.ItemSet;
+import be.ac.ulg.montefiore.run.jadti.KnownSymbolicValue;
+import be.ac.ulg.montefiore.run.jadti.SymbolicAttribute;
 
+import game.Attributes;
 import game.DataPieceAttributes;
 
 import java.util.*;
@@ -10,6 +16,7 @@ import java.util.*;
 import mixmeta4.Board;
 import mixmeta4.Move;
 import mixmeta4.Piece;
+import mixmeta4.PieceSet;
 
 /**
  * This file contains a template for getting started writing a minimax 
@@ -26,21 +33,23 @@ import mixmeta4.Piece;
  * @author Cara MacNish
  */
 
-public class Minimax {
+public class MiniMaxDecision {
 
-  NodeInfo nodeInfo;
-  ArrayList<Node> visited;
+  private NodeInfo nodeInfo;
+  private ArrayList<Node> visited;
   private DecisionTree tree;
-
-  public Minimax (NodeInfo nodeInfo) {
-    this.nodeInfo = nodeInfo;
-    visited = new ArrayList<Node>();
-  }
-  
-  public Minimax (NodeInfo nodeInfo, DecisionTree tree) {
+  private PieceSet black;
+  private PieceSet white;
+  private boolean debug = true;
+  private Attributes atts;
+   
+  public MiniMaxDecision (NodeInfo nodeInfo, DecisionTree tree, PieceSet black, PieceSet white) {
 	    this.nodeInfo = nodeInfo;
 	    visited = new ArrayList<Node>();
 	    this.tree = tree;
+	    this.black = black;
+	    this.white = white;
+	    this.atts = new Attributes();
   }
   
   /**
@@ -138,6 +147,7 @@ public class Minimax {
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
+    	  this.decideOnMove((Move)arc, (Board)child.getState());
     	  child.update(arc);
     	  
     	//  if(!nodeExists(child)) {
@@ -157,8 +167,108 @@ public class Minimax {
       return beta;
     }
 
-
+    	
   }
   
+  private boolean decideOnMove(Move move, Board board) {
+	  Board newBoard = (Board)board.clone();
+	  ListIterator<Piece> defaultset;
+	  ListIterator<Piece> pieces;
+	  newBoard.update(move);
+	  
+	  ArrayList<KnownSymbolicValue> askData = new ArrayList<KnownSymbolicValue>(50); 
+	  ItemSet testSet = new ItemSet(this.tree.getAttributeSet());
+	  if(!newBoard.redToMove) {
+		  defaultset = this.black.listIterator();
+		  pieces = newBoard.getBlackPieces().listIterator();
+	  } else {
+		  defaultset = this.white.listIterator();
+		  pieces = newBoard.getRedPieces().listIterator();
+	  }
+	  boolean doOther = true;
+	  if(pieces.hasNext()) {
+		  Piece piece = pieces.next();
+		  if(debug) System.out.println("Fill the data for each of the pieces loop");
+		  while(defaultset.hasNext()) {
+//			  DataPieceAttributes dpa = new DataPieceAttributes();
+
+			  Piece defaultPiece = defaultset.next();
+
+			  if(piece.toString().compareTo(defaultPiece.toString()) != 0) {
+//				  dpa.setPiece(defaultPiece);
+
+//				  dpa.addAttribute("canBeTaken");
+				  
+				  askData.add(new KnownSymbolicValue(booleanToInteger(false)));
+
+//				  dpa.addAttribute("canMove");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(false)));
+
+//				  dpa.addAttribute("canTake");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(false)));
+
+//				  dpa.addAttribute("takeKing");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(false)));
+//				  datum.addPieceAttributes(dpa);
+				  if(pieces.hasNext()) {
+					  piece = pieces.next();
+				  }
+				  //defaultPiece = defaultset.next();
+				  doOther = false;
+
+			  }
+			  if(doOther) {
+//				  dpa.setPiece(piece);
+
+//				  dpa.addAttribute("canBeTaken");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(atts.canBeTaken(newBoard, piece))));
+
+//				  dpa.addAttribute("canMove");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(atts.canMove(newBoard, piece))));
+
+//				  dpa.addAttribute("canTake");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(atts.canTake(newBoard, piece))));
+
+//				  dpa.addAttribute("takeKing");
+				  askData.add(new KnownSymbolicValue(booleanToInteger(atts.takeKing(newBoard))));
+//				  datum.addPieceAttributes(dpa);
+				  if(pieces.hasNext()) {
+					  piece = pieces.next();
+				  }
+				  //defaultPiece = defaultset.next();
+
+			  }
+			  doOther = true;
+		  }
+	  }
+	  
+	  Item item = new Item((AttributeValue[]) askData.toArray());
+	  AttributeSet itemAttributes = tree.getAttributeSet();
+	  SymbolicAttribute goalAttribute = tree.getGoalAttribute();
+		
+	  KnownSymbolicValue goalAttributeValue = 
+		    (KnownSymbolicValue) item.valueOf(itemAttributes, goalAttribute);
+	  KnownSymbolicValue guessedGoalAttributeValue = 
+		    tree.guessGoalAttribute(item);
+	  
+//	  data.add(datum);
+	  System.out.println(guessedGoalAttributeValue.toString());
+	  return true;
+
+  }
+
+//  testSet.add(arg0)
+
+  private int booleanToInteger(boolean duh) {
+	  if(duh) {
+		  return 1;
+	  }
+	  return 0;
+  }
+
+
+
 
 }
+
+
