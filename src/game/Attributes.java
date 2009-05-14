@@ -1,4 +1,4 @@
-package player;
+package game;
 import java.awt.Point;
 import java.util.ListIterator;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class Attributes {
 		Piece currentPiece = null;
 		
 		// Get the right side
-		if (board.isRed) {
+		if (board.redToMove) {
 			ps = board.getRedPieces();
 		} else {
 			ps = board.getBlackPieces();
