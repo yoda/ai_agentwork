@@ -28,7 +28,7 @@ public class DataProcessor {
 	
 	public DataProcessor(ArrayList<String> directories) {
 		this.directories = directories;
-		this.atts = new Attributes();
+		this.atts = new Attributes(false);
 		this.data = new ArrayList<DataAtom>();
 		this.writeable = false;
 	}

@@ -41,7 +41,7 @@ public class MiniMaxDecision {
   private PieceSet black;
   private PieceSet white;
   private boolean debug = true;
-  private Attributes atts;
+  
    
   public MiniMaxDecision (NodeInfo nodeInfo, DecisionTree tree, PieceSet black, PieceSet white) {
 	    this.nodeInfo = nodeInfo;
@@ -49,7 +49,7 @@ public class MiniMaxDecision {
 	    this.tree = tree;
 	    this.black = black;
 	    this.white = white;
-	    this.atts = new Attributes();
+	    
   }
   
   /**
@@ -178,6 +178,7 @@ public class MiniMaxDecision {
 	  ListIterator<Piece> defaultset;
 	  ListIterator<Piece> pieces;
 	  newBoard.update(move);
+	  Attributes atts = new Attributes(board.redToMove);
 	  
 	  ArrayList<KnownSymbolicValue> askData = new ArrayList<KnownSymbolicValue>(50); 
 	  ItemSet testSet = new ItemSet(this.tree.getAttributeSet());
