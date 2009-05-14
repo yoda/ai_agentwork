@@ -260,7 +260,8 @@ public class MiniMaxDecision {
 		    tree.guessGoalAttribute(item);
 	  
 //	  data.add(datum);
-	  System.out.println(guessedGoalAttributeValue.toString());
+	  
+	  System.out.println(tree.getGoalAttribute().valueToString(guessedGoalAttributeValue));
 	  return true;
 
   }

@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import mixmeta4.Move;
+import mixmeta4.Piece;
 
 public class DataAtom implements Serializable {
 	
 	private int key;
 	private ArrayList<DataPieceAttributes> pieceList;
 	private Move move;
+	private Piece piece;
 	
 	public DataAtom() {
 		this.pieceList = new ArrayList<DataPieceAttributes>();
@@ -30,6 +32,14 @@ public class DataAtom implements Serializable {
 	
 	public ArrayList<DataPieceAttributes> getPieceAttributesSet() {
 		return this.pieceList;
+	}
+	
+	public void setPiece(Piece thePiece) {
+		this.piece = thePiece;
+	}
+	
+	public Piece getPiece() {
+		return this.piece;
 	}
 	
 	public void setMove(Move theMove) {
@@ -94,7 +104,7 @@ public class DataAtom implements Serializable {
 				result += " " + dpa.getResults().get(z) + "";
 			}
 		}
-		result += " " + this.fixMove(this.removeSpaces(this.getMove().toString())) + "";
+		result += " " + this.getPiece().toString().toLowerCase() + "";
 		return result;
 	}
 	
