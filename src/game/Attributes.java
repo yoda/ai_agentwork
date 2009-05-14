@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import mixmeta4.*;
 
 public class Attributes {
-	
+
+	// New	
 	// a helper method to find the location of the king
 	// todo: change to binary search
 	// @return a Square, because a square can get both location and piece
