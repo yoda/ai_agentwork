@@ -43,7 +43,7 @@ public class Attributes {
 		Move currentMove;
 		ListIterator ls = move.listIterator();
 		//!board.redToMove because want to get opponent's king and it's my turn to move
-		Square kingLocation = findKing (board, this.isRed);
+		Square kingLocation = findKing (board, !this.isRed);
 		//get all my moves' destinations
 		while (ls.hasNext()) {
 			currentMove = (Move) ls.next();

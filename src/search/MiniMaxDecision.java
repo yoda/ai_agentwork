@@ -110,6 +110,10 @@ public class MiniMaxDecision {
       while (li.hasNext()) {
     	  child = (Node)visit.clone();
     	  arc = (Action)li.next();
+    	  if(this.decideOnMove((Move)arc, (Board)child.getState())) {
+    		  break;
+    	  }
+    	  
     	  child.update(arc);
     	 
    // 	  if(!nodeExists(child)) {
