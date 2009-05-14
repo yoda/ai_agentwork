@@ -6,36 +6,39 @@ import mixmeta4.*;
 
 public class Attributes {
 	
-	static final int canmove = 1;
-	static final int cantake =2;
-	static final int canbetaken = 3;
-	static final int takeKing = 4;
-	static final int kingOnThread = 5;
-	
-	//a helper method to find the location of the king
-	//@return a Square, because a square can get both location and piece
-	private Square findKing (Board board, boolean isRed) {
-		PieceSet ps;
-		Piece currentPiece;
-		if (isRed) {
+	// a helper method to find the location of the king
+	// todo: change to binary search
+	// @return a Square, because a square can get both location and piece
+	private Square findKing (Board board, Boolean isRed) {
+		PieceSet ps = null;
+		Piece currentPiece = null;
+		
+		// Get the right side
+		if (board.isRed) {
 			ps = board.getRedPieces();
 		} else {
 			ps = board.getBlackPieces();
 		}
+		
+		// Iterate through the piece set to get all pieces
 		ListIterator ls = ps.listIterator();
 		while (ls.hasNext()) {
 			currentPiece = (Piece) ls.next();
-			if (currentPiece.toString().toLowerCase().compareTo("k") == 0) {
-				return currentPiece.square;
+			// If found king, break from search
+			if (currentPiece.toString().toLowerCase().equals("k")) {
+				break;
 			}
 		}
-		return null;
+		
+		// Return the Piece or null
+		return currentPiece;
 	}
-	
 	
 	public boolean takeKing (Board board) {
 		Moves move = (Moves) board.getActions();
-		Move currentMove;
+		Move currentMove = null;
+		
+		// Iterate through all moves
 		ListIterator ls = move.listIterator();
 		//!board.redToMove because want to get opponent's king and it's my turn to move
 		Square kingLocation = findKing (board, !board.redToMove);
@@ -50,31 +53,33 @@ public class Attributes {
 	}
 	
 	// can just call canBeTake function and the target piece will be my king
+	// @return true if our King is under threat.
 	public boolean kingOnThread (Board board) {
+		// Find our King in the board
 		Square sq = findKing(board, board.redToMove);
+		// Return if it can be taken
 		return canBeTaken(board, sq.look());
-		
 	}
 	
+	// @return true if piece can Move.
 	public boolean canMove (Board board, Piece which) {
-		if (board.getActions(which).size() > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (board.getActions(which).size() > 0);
 	}
 	
+	// @return true if piece can take any of the opponents pieces.
 	public boolean canTake (Board board, Piece which) {
-		if (canMove(board, which)) {//check a piece whether can move
+		// check a piece whether can move
+		if (canMove(board, which)) {
 			Point dest;
-			boolean colour = which.isRed;//get the piece colour
 			Moves moves = (Moves) board.getActions(which);
 			Move current;
+			
+			// Iterate through pieces available moves.
 			ListIterator ls = moves.listIterator();
 			while (ls.hasNext()) {
 				current = (Move) ls.next();
 				dest = current.getDestination();
-				if (board.getSquare(dest).isOccupiedByOpponent(colour)) {
+				if (board.getSquare(dest).isOccupiedByOpponent(which.isRed)) {
 					return true;
 				}
 			}
@@ -82,11 +87,11 @@ public class Attributes {
 		return false;
 	}
 	
+	// @return true if the piece can be taken by an opponent.
 	public boolean canBeTaken (Board board, Piece which) {
 		Point location = which.square.getLocation();
-		boolean colour = which.isRed;
 		PieceSet opp;//opponent's pieceSet
-		if (colour) {
+		if (which.isRed) {
 			opp = board.getBlackPieces();
 		} else {
 			opp = board.getRedPieces();
@@ -99,38 +104,20 @@ public class Attributes {
 		ListIterator li;
 		//the double while loop here is checking each opponent's move's destination 
 		//whether is same as the target piece
+		// Iterate through all of opponents pieces.
 		while (ls.hasNext()) {
 			currentPiece = (Piece) ls.next();
 			moves = (Moves) board.getActions(currentPiece);
 			li = moves.listIterator();
+			// Check all moves for that piece.
 			while (li.hasNext()) {
 				currentMove = (Move) li.next();
 				dest = currentMove.getDestination();
 				if (dest.distance(location) == 0) {
 					return true;
 				}
-				
 			}
 		}
 		return false;
-	}
-	//@attribute -  means use which function will be used from above
-	public boolean[] getAll (Board board, PieceSet ps, int attribute) {
-		boolean result[] = new boolean[12];
-		Piece currentPiece;
-		ListIterator ls = ps.listIterator();
-		int i = 0;
-		while (ls.hasNext()) {
-			currentPiece = (Piece) ls.next();
-			if (attribute == 1) {
-				result[i] = canMove(board, currentPiece);
-			} else if (attribute ==2) {
-				result[i] = canTake(board, currentPiece);
-			} else if (attribute ==3) {
-				result[i] = canBeTaken(board, currentPiece);
-			}
-			i++;
-		}
-		return result;
 	}
 }
