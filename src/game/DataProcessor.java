@@ -97,43 +97,12 @@ public class DataProcessor {
 	}
 	
 	private String convertDigitToAlpha(int x) {
-		String initial = "" + x;
-		String result = "";
-		for(int y = 0; y < initial.length(); y++) {
-			switch(Character.getNumericValue(initial.charAt(y))) {
-				case 0 :
-					result += "a";
-					break;
-				case 1 :
-					result += "b";
-					break;
-				case 2 :
-					result += "c";
-					break;
-				case 3 :
-					result += "d";
-					break;
-				case 4 :
-					result += "e";
-					break;
-				case 5 :
-					result += "f";
-					break;
-				case 6 :
-					result += "g";
-					break;
-				case 7 :
-					result += "h";
-					break;
-				case 8 :
-					result += "i";
-					break;
-				case 9 :
-					result += "j";
-					break;
-			}	
+	    String initial = "" + x;
+		StringBuilder s = new StringBuilder();
+		for(int y = 0; y < initial.length(); ++y) {
+			s.append((char)(Character.getNumericValue(initial.charAt(y)) + (int)'a'));
 		}
-		return result;
+		return s.toString();
 	}
 	
 	private String attributeString(DataAtom lineone) {
