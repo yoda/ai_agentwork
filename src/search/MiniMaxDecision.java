@@ -242,7 +242,15 @@ public class MiniMaxDecision {
 		  }
 	  }
 	  
-	  Item item = new Item((AttributeValue[]) askData.toArray());
+	  ListIterator<KnownSymbolicValue> ita = askData.listIterator();
+	  KnownSymbolicValue[] ksvArray = new KnownSymbolicValue[askData.size()+2];
+	  int o = 1;
+	  while(ita.hasNext()) {
+		  ksvArray[o] = ita.next();
+		  o++;
+	  }
+	  Item item = new Item(ksvArray);
+	  
 	  AttributeSet itemAttributes = tree.getAttributeSet();
 	  SymbolicAttribute goalAttribute = tree.getGoalAttribute();
 		
