@@ -26,6 +26,7 @@ public class Run {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+<<<<<<< HEAD:src/game/Run.java
 		
 		Run run = new Run();
 		
@@ -145,6 +146,10 @@ public class Run {
 			return -1;
 		}
 		
+=======
+		Play.main(null);
+		// Added comment
+>>>>>>> Task1_William:src/game/Run.java
 	}
 
 }
